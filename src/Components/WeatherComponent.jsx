@@ -51,9 +51,11 @@ const DisasterComponent = ({ latitude, longitude }) => {
 
   useEffect(() => {
     if (latitude && longitude) {
-      const api_key = "CjSqhFWM8OkJECQHrqnatyjED0MAe2Fl"; // Replace with your actual API key
+      const api_key = process.env.REACT_APP_WEATHER_API ;
       const base_url = "https://api.tomorrow.io/v4/timelines";
       const fields = ["precipitationIntensity", "rainIntensity", "temperature"];
+
+      console.log("API Key:", api_key);
 
       const today = new Date();
       const tomorrow = new Date(today);
