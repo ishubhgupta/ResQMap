@@ -2,7 +2,8 @@ import React, { useState } from 'react';
 import './App.css';
 import LocationComponent from './Components/GeoLoacation';
 import WeatherComponent from './Components/WeatherComponent';
-import MapComponent from './MapComponent';
+import MapComponent from './Components/MapComponent';
+import Chatbot from './Components/ChatBot';
 
 const App = () => {
   const [userLocation, setUserLocation] = useState({
@@ -52,6 +53,7 @@ const App = () => {
         <div className="container-box-center" id="about">
           <h2>About Us Section</h2>
           <p>Content for the About Us section.</p>
+          <Chatbot/>
         </div>
       </div>
 
