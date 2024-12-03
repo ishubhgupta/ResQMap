@@ -33,7 +33,7 @@ function App() {
                     <p>Content for the Overcast</p>
                 </div>
                 <div className="container-box-center" id="about">
-                    <h2>About Us Section</h2>
+                    <h2>About Us </h2>
                     <p>Content for the About Us section.</p>
                 </div>
             </div>
