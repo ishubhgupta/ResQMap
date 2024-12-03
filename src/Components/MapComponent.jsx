@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from "react";
+import PropTypes from "prop-types";
 import { MapContainer, TileLayer, Marker, Popup, useMap } from "react-leaflet";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 import "leaflet.heat";
-import "boxicons/css/boxicons.min.css";
 
-// Define a custom marker icon using Boxicons
+// Define a custom marker icon
 const customIcon = new L.Icon({
-  iconUrl: "https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css",
+  iconUrl: "https://cdn-icons-png.flaticon.com/512/684/684908.png", // Use a valid icon URL
   iconSize: [30, 30],
   iconAnchor: [15, 30],
   popupAnchor: [0, -30],
@@ -18,6 +18,7 @@ const HeatLayer = ({ data }) => {
   const map = useMap();
 
   useEffect(() => {
+    // Add heat map layer
     const heatLayer = L.heatLayer(data, {
       radius: 25,
       blur: 15,
@@ -26,6 +27,7 @@ const HeatLayer = ({ data }) => {
 
     heatLayer.addTo(map);
 
+    // Cleanup on unmount
     return () => {
       map.removeLayer(heatLayer);
     };
@@ -66,6 +68,17 @@ const MapComponent = ({ latitude, longitude, heatmapData }) => {
       </MapContainer>
     </div>
   );
+};
+
+// PropTypes for validation
+MapComponent.propTypes = {
+  latitude: PropTypes.number.isRequired,
+  longitude: PropTypes.number.isRequired,
+  heatmapData: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.number)).isRequired,
+};
+
+HeatLayer.propTypes = {
+  data: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.number)).isRequired,
 };
 
 export default MapComponent;
