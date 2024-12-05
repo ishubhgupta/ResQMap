@@ -56,6 +56,7 @@ const App = () => {
           <Chatbot/>
         </div>
       </div>
+      <chatbot/>
 
       <div className="right-section">
         <div className="container-box-right">
