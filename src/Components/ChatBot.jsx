@@ -11,7 +11,9 @@ const Chatbot = () => {
 
   useEffect(() => {
     // Initialize Google Generative AI
-    const genAI = new GoogleGenerativeAI(process.env.REACT_APP_GEMINI_API);
+    const apiKey = process.env.REACT_APP_GEMINI_API;
+    console.log("API Key:", apiKey); // Add this line to check if the API key is being loaded
+    const genAI = new GoogleGenerativeAI(apiKey);
 
     try {
       const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
@@ -63,10 +65,7 @@ const Chatbot = () => {
         botResponse += chunkText;
 
         // Stream partial responses
-        setMessages((prevMessages) => [
-          ...prevMessages.filter((msg) => msg.sender !== "bot-streaming"),
-          { sender: "bot-streaming", text: botResponse },
-        ]);
+        updateMessages(botResponse);
       }
 
       // Replace "streaming" message with the final bot message
@@ -78,12 +77,19 @@ const Chatbot = () => {
       console.error("Error during message processing:", error);
       setMessages((prevMessages) => [
         ...prevMessages,
-        { sender: "bot", text: "An error occurred. Please try again later." },
+        { sender: "bot", text: `An error occurred. Please try again later. Error: ${error.message}` },
       ]);
     }
 
     // Clear input field
     setInput("");
+  };
+
+  const updateMessages = (botResponse) => {
+    setMessages((prevMessages) => [
+      ...prevMessages.filter((msg) => msg.sender !== "bot-streaming"),
+      { sender: "bot-streaming", text: botResponse },
+    ]);
   };
 
   return (
@@ -100,25 +106,25 @@ const Chatbot = () => {
       {isChatbotVisible && (
         <div className="chatbot-container">
           <div className="chat-window">
-          {messages.map((msg, index) => (
-            <div
-              key={index}
-              className={`message ${msg.sender === "user" ? "user" : "bot"}`}
-            >
-              {/* If the message is from the bot, show the bot image */}
-              {msg.sender === "bot" && (
-                <div className="bot-image-container">
-                  <img
-                    src={sunImage} // Replace with actual image path or URL
-                    alt="Bot"
-                    className="bot-image"
-                  />
-                </div>
-              )}
-              <div>{msg.text}</div>
-            </div>
-          ))}
-        </div>
+            {messages.map((msg, index) => (
+              <div
+                key={index}
+                className={`message ${msg.sender === "user" ? "user" : "bot"}`}
+              >
+                {/* If the message is from the bot, show the bot image */}
+                {msg.sender === "bot" && (
+                  <div className="bot-image-container">
+                    <img
+                      src={sunImage} // Replace with actual image path or URL
+                      alt="Bot"
+                      className="bot-image"
+                    />
+                  </div>
+                )}
+                <div>{msg.text}</div>
+              </div>
+            ))}
+          </div>
           <div className="input-area">
             <input
               type="text"
