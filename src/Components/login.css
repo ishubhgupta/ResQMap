@@ -41,8 +41,8 @@ login.css
     border-radius: 10px;
     border: 1px solid rgba(255, 255, 255, 0.18); /* Border with slight transparency */
     box-shadow: 0 8px 32px 0 rgba(197, 130, 23, 0.76); /* Subtle shadow */
-    backdrop-filter: blur(3.5px); /* Blur effect */
     -webkit-backdrop-filter: blur(3.5px); /* Blur effect for Safari */
+    backdrop-filter: blur(3.5px); /* Blur effect */
     height: 400px;
 }
 
