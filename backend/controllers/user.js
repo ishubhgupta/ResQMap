@@ -31,7 +31,7 @@ export const signup = async (req, res) => {
 
     generateJWTToken(res, user._id, user.email);
 
-    sendVerificationEmail(user.email, verificationToken);
+    await sendVerificationEmail(user.email, verificationToken); // Ensure this line is correct and the function is working
 
     return res.status(201).json({
       success : true,

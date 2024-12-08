@@ -1,20 +1,23 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom"; // Import useNavigate
 
 const VerifyEmail = () => {
   const [code, setCode] = useState("");
   const [message, setMessage] = useState("");
+  const navigate = useNavigate(); // Initialize navigate
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch("/api/user/verify-email", {
+      const response = await fetch("http://localhost:5728/api/user/verify-email", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ code }),
       });
       const data = await response.json();
       if (data.success) {
-        setMessage("Email verified successfully! You can now log in.");
+        setMessage("Email verified successfully! Redirecting to login...");
+        setTimeout(() => navigate("/login"), 2000); // Redirect after 2 seconds
       } else {
         setMessage(data.message || "Verification failed. Try again.");
       }

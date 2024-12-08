@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom'; // Import useNavigate for redirection
 import api from '../api';
+import './signup.css'; // Import the CSS file
 
 const Signup = () => {
   const [name, setName] = useState('');
@@ -22,30 +23,43 @@ const Signup = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <input
-        type="text"
-        placeholder="Name"
-        value={name}
-        onChange={(e) => setName(e.target.value)}
-        required
-      />
-      <input
-        type="email"
-        placeholder="Email"
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-        required
-      />
-      <input
-        type="password"
-        placeholder="Password"
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
-        required
-      />
-      <button type="submit">Signup</button>
-    </form>
+    <div className="main-container">
+      <div className="split-container">
+        {/* Left: Image */}
+        <div className="image-container"></div>
+
+        {/* Right: Signup form */}
+        <div className="signup-container">
+          <form onSubmit={handleSubmit}>
+            <h1>Signup</h1>
+            <input
+              type="text"
+              placeholder="Name"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              required
+            />
+            <input
+              type="email"
+              placeholder="Email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+            />
+            <input
+              type="password"
+              placeholder="Password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+            />
+            <button type="submit">Signup</button>
+            <a href="/login" className="login-link">Already have an account? Login</a>
+          </form>
+        </div>
+      </div>
+    </div>
+    
   );
 };
 
