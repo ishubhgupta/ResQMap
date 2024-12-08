@@ -1,0 +1,133 @@
+login.css
+
+
+/* Centering the main container */
+.main-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background-color: #fff; /* Dark background */
+}
+
+/* Two-column container */
+.split-container {
+    display: flex;
+    width: 80%;
+    max-width: 1200px;
+    background-color: #000000c2; /* Black background */
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    overflow: hidden;
+    height: 600px;
+}
+
+/* Left part for login form */
+.login-container {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+
+/* Login form styling */
+.login-container form {
+    width: 100%;
+    max-width: 400px;
+    text-align: center;
+    background: rgba(255, 255, 255, 0.25); /* Frosted glass background */
+    padding: 30px 20px;
+    border-radius: 10px;
+    border: 1px solid rgba(255, 255, 255, 0.18); /* Border with slight transparency */
+    box-shadow: 0 8px 32px 0 rgba(197, 130, 23, 0.76); /* Subtle shadow */
+    -webkit-backdrop-filter: blur(3.5px); /* Blur effect for Safari */
+    backdrop-filter: blur(3.5px); /* Blur effect */
+    height: 400px;
+}
+
+/* Login heading */
+.login-container h1 {
+    font-size: 28px;
+    color: rgba(255, 140, 0, 0.845); /* Orange-yellow color */
+    margin-bottom: 60px;
+}
+
+/* Input fields */
+.login-container input {
+    width: 100%;
+    padding: 10px 15px;
+    margin-bottom: 35px;
+    font-size: 16px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    box-sizing: border-box;
+    outline: none;
+    transition: border-color 0.3s;
+    color: #fff; /* White text */
+    background-color: #555; /* Dark background for inputs */
+}
+
+.login-container input:focus {
+    border-color: rgba(255, 140, 0, 0.845); /* Orange-yellow border on focus */
+}
+
+/* Submit button */
+.login-container button {
+    width: 100%;
+    padding: 10px 15px;
+    font-size: 18px;
+    color: #000; /* Black text */
+    background-color: rgba(255, 140, 0, 1); /* Orange-yellow background */
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.login-container button:hover {
+    background-color: rgba(255, 140, 0, 0.8); /* Slightly transparent darker shade on hover */
+    color: #1a1a1a; /* Dark text on hover */
+}
+
+/* Styling for the "Forgot Password" link */
+.forgot-password-link {
+    display: block;
+    margin-top: 10px; /* Adds space above the link */
+    margin-bottom: 10px;
+    text-align: right;
+    color: rgba(255, 140, 0, 1); /* Orange-yellow color */
+    text-decoration: none; /* Removes underline */
+    font-size: 0.9rem; /* Slightly smaller font size */
+}
+
+.forgot-password-link:hover {
+    text-decoration: underline; /* Underline on hover */
+    color: rgba(255, 140, 0, 0.8); /* Slightly darker shade on hover */
+}
+
+.signup-link {
+    margin-top: 25px; /* Space between the links */
+    font-size: 0.9rem; /* Slightly smaller font size */
+    color: rgba(255, 140, 0, 1); /* Matches the orange-yellow theme */
+    text-align: center; /* Center the text */
+  }
+  
+  .signup-link a {
+    text-decoration: none; /* Remove underline */
+    font-weight: bold;
+  }
+  
+  .signup-link a:hover {
+    text-decoration: underline; /* Underline on hover */
+    color: rgba(255, 140, 0, 0.8); /* Darker shade on hover */
+  }
+  
+
+/* Right part for the image */
+.image-container {
+    flex: 1;
+    background: url('../../public/images/sahej-3.jpg') no-repeat center center;
+    background-size: cover;
+    height: auto;
+}
