@@ -1,5 +1,7 @@
-import React, { useState } from 'react';
+import React from 'react';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import './App.css';
+
 import LocationComponent from './Components/GeoLoacation';
 import WeatherComponent from './Components/WeatherComponent';
 import MapComponent from './Components/MapComponent';
@@ -69,5 +71,6 @@ const App = () => {
     </div>
   );
 };
+
 
 export default App;
