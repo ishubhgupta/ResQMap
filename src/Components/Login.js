@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import api from '../api';
 import './login.css'; // Import the CSS file
 
 const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -12,6 +14,7 @@ const Login = () => {
       const response = await api.post('/login', { email, password });
       if (response.data.success) {
         alert('Login successful');
+        navigate('/home'); // Redirect to home page
       }
     } catch (error) {
       alert(error.response?.data?.message || 'An error occurred');

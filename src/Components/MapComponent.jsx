@@ -3,11 +3,10 @@ import { MapContainer, TileLayer, Marker, Popup, useMap } from "react-leaflet";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 import "leaflet.heat";
-import "boxicons/css/boxicons.min.css";
 
 // Define a custom marker icon using Boxicons
 const customIcon = new L.Icon({
-  iconUrl: "https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css",
+  iconUrl: "https://unpkg.com/boxicons@2.1.4/svg/solid/bxs-map.svg",
   iconSize: [30, 30],
   iconAnchor: [15, 30],
   popupAnchor: [0, -30],
@@ -52,7 +51,11 @@ const MapComponent = ({ latitude, longitude, heatmapData }) => {
         boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.1)",
       }}
     >
-      <MapContainer center={position} zoom={5} style={{ height: "100%", width: "100%" }}>
+      <MapContainer
+        center={position}
+        zoom={5}
+        style={{ height: "100%", width: "100%" }}
+      >
         <TileLayer
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
