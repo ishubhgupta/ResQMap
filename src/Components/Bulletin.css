@@ -1,0 +1,219 @@
+.transparent-dashboard {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: #f0f2f5;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 2rem;
+  overflow-y: auto;
+  min-height: 100vh;
+}
+
+.dashboard-header {
+  text-align: center;
+  margin-bottom: 3rem;
+  color: #1a237e;
+  font-size: 2.5rem;
+  font-weight: 700;
+}
+
+.dashboard-content {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 2rem;
+  max-width: 1800px;
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+
+.dashboard-news-box {
+  background: white;
+  border-radius: 20px;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
+  overflow: hidden;
+  transition: all 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  height: 550px; /* Fixed height for consistency */
+  margin: 0;
+  padding: 0;
+}
+
+.dashboard-news-box:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.12);
+}
+
+.news-image {
+  width: 100%;
+  height: 250px;
+  object-fit: cover;
+  border-radius: 0;
+  margin: 0;
+}
+
+.news-content {
+  padding: 1.5rem 2rem;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.news-meta {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+  font-size: 0.9rem;
+  color: #666;
+}
+
+.news-source {
+  font-weight: 600;
+  color: #1a237e;
+}
+
+.news-title {
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: #1a237e;
+  margin-bottom: 1rem;
+  line-height: 1.4;
+}
+
+.summary-text {
+  background: #f8f9fa;
+  padding: 1.5rem;
+  margin-top: 1rem;
+  border-radius: 12px;
+  font-size: 1rem;
+  color: #444;
+  line-height: 1.6;
+  border-left: 4px solid #1a237e;
+}
+
+.view-summary-button {
+  width: 100%;
+  padding: 1rem;
+  margin-top: 1.5rem;
+  border-radius: 12px;
+  background: #1a237e;
+  color: white;
+  font-weight: 600;
+  font-size: 1rem;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.view-summary-button:hover {
+  background: #283593;
+  transform: scale(1.02);
+}
+
+.view-summary-button:focus {
+  outline: none; /* Remove default outline on focus */
+  box-shadow: 0 0 5px rgba(0, 123, 255, 0.8); /* Add a glowing effect around the button when focused */
+}
+
+.view-summary-button:active {
+  background-color: #004085; /* Even darker blue when the button is pressed */
+}
+
+.close-dashboard-cross {
+  position: fixed;
+  top: 2rem;
+  right: 2rem;
+  background: #1a237e;
+  color: white;
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.8rem;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border: none;
+}
+
+.close-dashboard-cross:hover {
+  transform: rotate(90deg);
+  background: #283593;
+}
+
+/* Modal styles for detail view */
+.news-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.news-modal {
+  background: white;
+  width: 90%;
+  max-width: 800px;
+  max-height: 90vh;
+  border-radius: 20px;
+  padding: 2rem;
+  overflow-y: auto;
+  position: relative;
+}
+
+.modal-close {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background: #1a237e;
+  color: white;
+  border: none;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.modal-image {
+  width: 100%;
+  max-height: 400px;
+  object-fit: cover;
+  border-radius: 10px;
+  margin-bottom: 1rem;
+}
+
+/* Responsive grid adjustments */
+@media (max-width: 1200px) {
+  .dashboard-content {
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  }
+}
+
+@media (max-width: 768px) {
+  .dashboard-content {
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  }
+  
+  .dashboard-news-box {
+    height: 500px;
+  }
+}
+
+@media (max-width: 480px) {
+  .dashboard-content {
+    grid-template-columns: 1fr;
+  }
+}

@@ -1,0 +1,110 @@
+signup.css
+
+/* Centering the main container */
+.main-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background-color: #f5f5f5;
+}
+
+/* Two-column container */
+.split-container {
+    display: flex;
+    width: 80%;
+    max-width: 1200px;
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    overflow: hidden;
+    height: 600px;
+}
+
+/* Left part for image */
+.image-container {
+    flex: 1;
+    background-image: url('../../public/images/sahej-4.jpg'); /* Update this path with your new image */
+    background-size: cover;
+    background-position: center;
+    border-radius: 10px 0 0 10px;
+}
+
+/* Right part for signup form */
+.signup-container {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+
+/* Signup form styling */
+.signup-container form {
+    width: 100%;
+    max-width: 400px;
+    text-align: center;
+    background: rgba(255, 255, 255, 0.25);
+    padding: 30px 20px;
+    border-radius: 10px;
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    box-shadow: 0 8px 32px 0 rgba(216, 145, 21, 0.549);
+    -webkit-backdrop-filter: blur(8.5px);
+    backdrop-filter: blur(8.5px);
+}
+
+/* Signup heading */
+.signup-container h1 {
+    font-size: 24px;
+    color: rgba(255, 140, 0, 1);
+    margin-bottom: 60px;
+}
+
+/* Input fields */
+.signup-container input {
+    width: 100%;
+    padding: 10px 15px;
+    margin-bottom: 30px; /* Adjusted spacing */
+    font-size: 16px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    box-sizing: border-box;
+    outline: none;
+    transition: border-color 0.3s;
+}
+
+.signup-container input:focus {
+    border-color: rgba(255, 140, 0, 1); /* Golden yellow border on focus */
+}
+
+/* Submit button */
+.signup-container button {
+    width: 100%;
+    padding: 10px 15px;
+    font-size: 18px;
+    color: #fff;
+    background-color: rgba(255, 140, 0, 1); /* Golden yellow */
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.signup-container button:hover {
+    background-color: #e08a00; /* Darker shade of yellow on hover */
+}
+
+/* Styling for the "Already have an account? Login" link */
+.login-link {
+    display: block;
+    margin-top: 10px;
+    text-align: right;
+    color: rgba(255, 140, 0, 1); /* Golden yellow color */
+    text-decoration: none;
+    font-size: 0.9rem;
+}
+
+.login-link:hover {
+    text-decoration: underline;
+    color: #e08a00; /* Darker yellow for hover */
+}
