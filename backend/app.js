@@ -7,6 +7,7 @@ import cors from 'cors'; // Import the cors package
 
 // Router imports
 import userRoute from "./routers/user.js";
+import missingReportRoute from "./routers/missingReport.js";
 
 const app = express();
 const PORT = process.env.PORT;
@@ -27,10 +28,11 @@ app.use(cors({
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 app.use(cookieParser());
-app.use(express.static(path.resolve('./public')));
+app.use(express.static(path.resolve('./uploads')));
 
 // Routes
 app.use('/api/user', userRoute);
+app.use("/api/missing-reports", missingReportRoute);
 
 app.get('/', (req, res) => res.send("he"));
 
