@@ -11,7 +11,6 @@
     "axion": "^0.1.0",
     "axios": "^1.7.7",
     "boxicons": "^2.1.4",
-
     "dotenv": "^16.4.5",
     "leaflet": "^1.9.4",
     "leaflet.heat": "^0.2.0",
