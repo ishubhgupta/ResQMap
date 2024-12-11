@@ -1,0 +1,66 @@
+/* Map container with fixed navbar-map */
+body, html {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    font-family: Arial, sans-serif;
+  }
+  
+  .map-container {
+    position: relative;
+    height: 50%;
+    border-radius: 10px;
+  }
+  
+  .navbar-map {
+    /* position: fixed; */
+    top: 0;
+    left: 0;
+    right: 0;
+    background-color: #333;
+    color: white;
+    display: flex;
+    justify-content: space-around;
+    /* padding: 10px; */
+    z-index: 1000; /* Ensure it stays on top */
+  }
+  
+  .navbar-map .nav-item {
+    color: white;
+    text-decoration: none;
+    padding: 8px 16px;
+    cursor: pointer;
+    background: none;
+    border: none;
+  }
+  
+  .navbar-map .nav-item:hover {
+    background-color: #555;
+  }
+    
+  .legend {
+    position: absolute;
+    bottom: 20px;
+    left: 20px;
+    padding: 10px;
+    background: rgba(255, 255, 255, 0.9);
+    font-size: 14px;
+    line-height: 1.5;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    z-index: 1000;
+  }
+  
+  .legend strong {
+    font-size: 16px;
+    display: block;
+    margin-bottom: 5px;
+  }
+  
+  .legend span {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    margin-right: 5px;
+  }
+  

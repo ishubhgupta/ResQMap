@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { FaSun, FaCloudRain, FaBolt } from 'react-icons/fa';  // Icons for weather conditions
+import './styles/DisasterComponent.css';  // External CSS file for styling
 
 const DisasterComponent = ({ latitude, longitude }) => {
   const [weatherData, setWeatherData] = useState(null);
@@ -92,14 +94,22 @@ const DisasterComponent = ({ latitude, longitude }) => {
 
   return (
     <div>
-      <h2>Natural Disaster Prediction</h2>
       {error && <p style={{ color: 'red' }}>Error: {error}</p>}
       {weatherData ? (
-        <div>
+        <div className="risk-level-container">
           <h3>Risk Levels</h3>
-          <p><strong>Flood Risk:</strong> {disasterPrediction.flood}</p>
-          <p><strong>Storm Risk:</strong> {disasterPrediction.storm}</p>
-          <p><strong>Heatwave Risk:</strong> {disasterPrediction.heatwave}</p>
+          <div className="risk-card flood-risk">
+            <FaCloudRain className="risk-icon" />
+            <p><strong>Flood Risk:</strong> {disasterPrediction.flood}</p>
+          </div>
+          <div className="risk-card storm-risk">
+            <FaBolt className="risk-icon" />
+            <p><strong>Storm Risk:</strong> {disasterPrediction.storm}</p>
+          </div>
+          <div className="risk-card heatwave-risk">
+            <FaSun className="risk-icon" />
+            <p><strong>Heatwave Risk:</strong> {disasterPrediction.heatwave}</p>
+          </div>
         </div>
       ) : (
         <p>Loading weather data...</p>
