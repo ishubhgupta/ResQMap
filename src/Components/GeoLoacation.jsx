@@ -42,14 +42,14 @@ const LocationComponent = ({ onLocationFetched }) => {
 
   return (
     <div>
-      <h2>User Location</h2>
+      {/* <h2>User Location</h2>
       {location.errorMessage ? (
         <p>Error: {location.errorMessage}</p>
       ) : (
         <p>
           Latitude: {location.latitude}, Longitude: {location.longitude}
         </p>
-      )}
+      )} */}
     </div>
   );
 };
