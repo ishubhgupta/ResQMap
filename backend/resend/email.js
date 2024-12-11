@@ -1,67 +1,86 @@
 import { resend } from "./config.js";
-import { verificationTemplate , confirmationTemplate} from "./emailTemplate.js";
-import nodemailer from 'nodemailer';
+import { verificationTemplate, confirmationTemplate } from "./emailTemplate.js";
 
-const transporter = nodemailer.createTransport({
-  service: 'Gmail',
-  auth: {
-    user: process.env.EMAIL_USER,
-    pass: process.env.EMAIL_PASS,
-  },
-});
-
-export const sendVerificationEmail = async (email, token) => {
-  const mailOptions = {
-    from: process.env.EMAIL_USER,
-    to: email,
-    subject: 'Email Verification',
-    text: `Your verification code is: ${token}`,
-  };
-
+export const sendVerificationEmail = async (email, verificationToken) => {
   try {
-    await transporter.sendMail(mailOptions);
-    console.log('Verification email sent');
+    const { data, error } = await resend.emails.send({
+      from: "Acme <onboarding@resend.dev>",
+      to: [email],
+      subject: "Sahej - Email verification",
+      html: verificationTemplate.replace("{verificationToken}", verificationToken),
+    });
+
+    if (error) {
+      console.error("Resend API Error (Verification Email):", error);
+      throw new Error("Failed to send verification email");
+    }
+
+    console.log("Verification email sent successfully:", data);
   } catch (error) {
-    console.error('Error sending verification email:', error);
+    console.error("Error sending verification email:", error.message);
+    throw error;
   }
 };
 
 export const sendConfirmationEmail = async (email, name) => {
-  try{
+  try {
     const { data, error } = await resend.emails.send({
       from: "Acme <onboarding@resend.dev>",
       to: [email],
-      subject: "Sahej - Confirmation Email ",
+      subject: "Sahej - Confirmation Email",
       html: confirmationTemplate.replace("{userName}", name),
     });
-  } catch(error){
-    throw new Error("Error sending welcome email");
+
+    if (error) {
+      console.error("Resend API Error (Confirmation Email):", error);
+      throw new Error("Failed to send confirmation email");
+    }
+
+    console.log("Confirmation email sent successfully:", data);
+  } catch (error) {
+    console.error("Error sending confirmation email:", error.message);
+    throw error;
   }
-}
+};
 
 export const sendResetPasswordEmail = async (email, resetURL) => {
-  try{
+  try {
     const { data, error } = await resend.emails.send({
       from: "Acme <onboarding@resend.dev>",
       to: [email],
       subject: "Reset Password",
-      html: `Click <a href="${resetURL}"> here </a> to reset your password`,
+      html: `Click <a href="${resetURL}">here</a> to reset your password`,
     });
-  } catch(error){
-    throw new Error("Error sending reset password email");
+
+    if (error) {
+      console.error("Resend API Error (Reset Password Email):", error);
+      throw new Error("Failed to send reset password email");
+    }
+
+    console.log("Reset password email sent successfully:", data);
+  } catch (error) {
+    console.error("Error sending reset password email:", error.message);
+    throw error;
   }
-}
+};
 
 export const sendResetPasswordSuccessEmail = async (email) => {
-  try{
+  try {
     const { data, error } = await resend.emails.send({
       from: "Acme <onboarding@resend.dev>",
       to: [email],
       subject: "Reset Password was Successful",
-      html: `Password was reset Successfully`,
+      html: `Password was reset successfully.`,
     });
-  } catch(error){
-    throw new Error("Error sending reset password success email");
-  }
-}
 
+    if (error) {
+      console.error("Resend API Error (Reset Password Success Email):", error);
+      throw new Error("Failed to send reset password success email");
+    }
+
+    console.log("Reset password success email sent successfully:", data);
+  } catch (error) {
+    console.error("Error sending reset password success email:", error.message);
+    throw error;
+  }
+};
