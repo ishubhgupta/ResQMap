@@ -1,11 +1,13 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
+import { NewsContext } from './NewsContext'; // Import the context
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import './Bulletin.css';
 
 function Bulletin() {
-    const [news, setNews] = useState([]);
-    const [selectedNews, setSelectedNews] = useState(null);
+    const [news, setNews] = useState([]); // State for news articles
+    const [selectedNews, setSelectedNews] = useState(null); // State for selected news modal
+    const { setRecentNews } = useContext(NewsContext); // Access the context
     const navigate = useNavigate();
 
     // Fetch news data
@@ -15,13 +17,17 @@ function Bulletin() {
                 const response = await axios.get(
                     'https://newsapi.org/v2/everything?q=disaster+India&apiKey=20ebe77da7e14006b12788ea2ea3d81b'
                 );
-                setNews(response.data.articles);
+                const articles = response.data.articles;
+                setNews(articles);
+                if (articles.length > 0) {
+                    setRecentNews(articles[0].title); // Save the most recent news headline
+                }
             } catch (error) {
                 console.error("Error fetching news:", error);
             }
         };
         fetchNews();
-    }, []);
+    }, [setRecentNews]);
 
     const handleNewsClick = (article) => {
         setSelectedNews(article);
