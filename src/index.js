@@ -3,11 +3,14 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+import { NewsProvider } from './Components/NewsContext'; // Import the provider
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <App />
+    <NewsProvider> {/* Wrap App with NewsProvider */}
+      <App />
+    </NewsProvider>
   </React.StrictMode>
 );
 
