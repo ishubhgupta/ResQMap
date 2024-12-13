@@ -1,0 +1,34 @@
+/* Container for navigation links */
+.nav-links-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    margin: 20px 0;
+    padding: 10px;
+  }
+  
+  /* Styling for each navigation item */
+  .nav-item {
+    text-decoration: none;
+    font-size: 18px;
+    font-weight: bold;
+    color: #333; /* Dark color for the text */
+    transition: color 0.3s ease, transform 0.3s ease; /* Smooth hover effects */
+    padding: 10px;
+    border-radius: 5px; /* Rounded corners for each link */
+    background-color: #f0f0f0; /* Light background */
+  }
+  
+  /* Hover effect for each link */
+  .nav-item:hover {
+    color: #fff;
+    background-color: #007bff; /* Blue background on hover */
+    transform: translateX(5px); /* Small horizontal movement */
+  }
+  
+  /* Optional: Add an active state */
+  .nav-item:active {
+    background-color: #0056b3; /* Darker blue when clicked */
+    transform: translateX(3px); /* Slightly more movement when clicked */
+  }
+  

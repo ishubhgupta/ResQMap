@@ -1,0 +1,62 @@
+/* Container for the Risk Levels */
+.risk-level-container {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    margin-top: 20px;
+  }
+  
+  /* Common card styling for all risk levels */
+  .risk-card {
+    display: flex;
+    align-items: center;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    background-color: #f9f9f9;
+    font-size: 10px;
+    font-weight: bold;
+    transition: all 0.3s ease;
+  }
+  
+  /* Icons in each risk card */
+  .risk-icon {
+    font-size: 30px;
+    margin-right: 7px;
+    margin-right: 7px;
+    color: #66ccff;
+  }
+  
+  /* Color codes for risk levels */
+  .flood-risk {
+    background-color: #e6f7ff; /* Light blue for low flood risk */
+    border-left: 5px solid #66ccff; /* Blue color for flood risk */
+  }
+  
+  .flood-risk p {
+    color: #66ccff;
+  }
+  
+  .storm-risk {
+    background-color: #fff4e6; /* Light orange for storm risk */
+    border-left: 5px solid #ff7f00; /* Orange color for storm risk */
+  }
+  
+  .storm-risk p {
+    color: #ff7f00;
+  }
+  
+  .heatwave-risk {
+    background-color: #ffe6e6; /* Light red for heatwave risk */
+    border-left: 5px solid #ff3333; /* Red color for heatwave risk */
+  }
+  
+  .heatwave-risk p {
+    color: #ff3333;
+  }
+  
+  /* Hover effect for the cards */
+  .risk-card:hover {
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+    transform: translateY(-5px);
+  }
+  
