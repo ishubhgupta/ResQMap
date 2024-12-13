@@ -12,7 +12,11 @@ import VerifyEmail from './Components/VerifyEmail';
 import Bulletin from './Components/Bulletin'; // Correctly import Bulletin
 import Sidebar from './Components/Sidebar';
 import { NewsContext } from './Components/NewsContext'; // Import the context
-import NavLinks from './Components/NavLinks';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import {faPortrait} from '@fortawesome/free-solid-svg-icons';
+import Profile from './Components/Profile';
+import UpdateProfile from './Components/UpdateProfile';
+import NewsTicker from './Components/NewTicker';
 
 const Home = ({ handleLocationFetched, userLocation }) => {
   const navigate = useNavigate();
@@ -22,12 +26,11 @@ const Home = ({ handleLocationFetched, userLocation }) => {
     <div className="container">
       <Sidebar/>
       <div className="center-section">
+
         <div className="navbar">
-        {recentNews && (
-                <div className="news-ribbon">
-                    <marquee>{recentNews}</marquee>
-                </div>
-            )}
+          <div className="bulletin">
+              {recentNews && <NewsTicker news={[{ title: recentNews }]} />}
+          </div>
         </div>
         <div className="container-box-center" id="home">
           <LocationComponent onLocationFetched={handleLocationFetched} />
@@ -46,7 +49,8 @@ const Home = ({ handleLocationFetched, userLocation }) => {
 
       <div className="right-section">
           <div className="container-box-right-profile">
-            <h2>Profile Image</h2>
+
+            <button className="button-big" onClick={() => navigate('/user-profile')}><FontAwesomeIcon icon={faPortrait} />Profile</button> {/* Profile Button */}
           </div>
         <div className="container-box-right">
           <p>Date: {new Date().toLocaleDateString()}</p>
@@ -82,6 +86,8 @@ const App = () => {
         <Route path="/verify-email" element={<VerifyEmail />} />
         <Route path="/bulletins" element={<Bulletin />} />
         <Route path="/home" element={<Home handleLocationFetched={handleLocationFetched} userLocation={userLocation} />} />
+        <Route path="/user-profile" element={<Profile />} ></Route>
+        <Route path="/user-update-profile" element={<UpdateProfile />} />
       </Routes>
     </Router>
   );

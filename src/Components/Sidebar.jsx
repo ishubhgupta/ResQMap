@@ -6,8 +6,8 @@ import {
   faBullhorn, 
   faInfoCircle, 
   faMoneyBillWave, 
-  faCog, 
-  faQuestionCircle 
+  faCog,
+  
 } from '@fortawesome/free-solid-svg-icons';
 import { useNavigate } from 'react-router-dom';
 import "./styles/Sidebar.css";
@@ -46,3 +46,4 @@ const Sidebar = () => {
 };
 
 export default Sidebar;
+
