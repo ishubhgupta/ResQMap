@@ -115,3 +115,44 @@ export const deleteReport = async (req, res) => {
     res.status(500).json({ success: false, message: error.message });
   }
 };
+
+export const updateReport = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const updates = req.body;
+    
+    const report = await MissingReport.findById(id);
+    if (!report) {
+      return res.status(404).json({ success: false, message: "Report not found" });
+    }
+
+    if (report.reportedBy.toString() !== req.userId) {
+      return res.status(403).json({ success: false, message: "You are not authorized to update this report" });
+    }
+
+    // If a new photo is uploaded, update the photoURL
+    if (req.file) {
+      updates.photoURL = `uploads/missingPersonImages/${req.file.filename}`;
+    }
+    
+    const updatedReport = await MissingReport.findByIdAndUpdate(id, updates, { new: true });
+
+    res.status(200).json({ success: true, message: "Report updated successfully", report: updatedReport });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+};
+
+export const getReportById = async (req, res) => {
+  try {
+    const report = await MissingReport.findById(req.params.id);
+    if (!report) {
+      return res.status(404).json({ message: 'Report not found' });
+    }
+    res.json({ report });
+  } catch (error) {
+    res.status(500).json({ message: 'Error fetching report details'});
+ }
+};
+
+

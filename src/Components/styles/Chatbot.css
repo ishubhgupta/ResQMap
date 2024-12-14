@@ -89,9 +89,9 @@
     border-top-left-radius: 0;
 }
 
-.bot-image {
+.bot-image-1 {
     width: 20%;
-    height: 20%;
+    height: 10%;
     border-radius: 50%;
     object-fit: cover; /* Makes sure the image doesn't stretch */
 }
