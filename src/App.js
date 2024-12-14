@@ -11,25 +11,26 @@ import ResetPassword from './Components/ResetPassword';
 import VerifyEmail from './Components/VerifyEmail';
 import Bulletin from './Components/Bulletin'; // Correctly import Bulletin
 import Sidebar from './Components/Sidebar';
-// import { NewsContext } from './Components/NewsContext'; // Import the context
-// import NavLinks from './Components/NavLinks';
+import { NewsContext } from './Components/NewsContext'; // Import the context
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import {faPortrait} from '@fortawesome/free-solid-svg-icons';
 import Profile from './Components/Profile';
 import UpdateProfile from './Components/UpdateProfile';
+import NewsTicker from './Components/NewTicker';
 
 const Home = ({ handleLocationFetched, userLocation }) => {
   const navigate = useNavigate();
-  // const { recentNews } = useContext(NewsContext);
+  const { recentNews } = useContext(NewsContext);
 
   return (
     <div className="container">
       <Sidebar/>
       <div className="center-section">
+
         <div className="navbar">
-        {/* {recentNews && (
-                <div className="news-ribbon">
-                   <p className="scrolling-text">{recentNews}</p>
-                </div>
-            )} */}
+          <div className="bulletin">
+              {recentNews && <NewsTicker news={[{ title: recentNews }]} />}
+          </div>
         </div>
         <div className="container-box-center" id="home">
           <LocationComponent onLocationFetched={handleLocationFetched} />
@@ -48,7 +49,8 @@ const Home = ({ handleLocationFetched, userLocation }) => {
 
       <div className="right-section">
           <div className="container-box-right-profile">
-          <button className="button-big" onClick={() => navigate('/user-profile')}>Profile</button> {/* Profile Button */}
+
+            <button className="button-big-1" onClick={() => navigate('/user-profile')}><FontAwesomeIcon icon={faPortrait} /> Profile</button> {/* Profile Button */}
           </div>
         <div className="container-box-right">
           <p>Date: {new Date().toLocaleDateString()}</p>
