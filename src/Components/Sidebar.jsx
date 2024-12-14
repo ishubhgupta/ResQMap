@@ -2,11 +2,12 @@ import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { 
   faHome, 
-  faBriefcase, 
   faBullhorn, 
   faInfoCircle, 
   faMoneyBillWave, 
   faCog,
+  faFileAlt,
+  faNewspaper
   
 } from '@fortawesome/free-solid-svg-icons';
 import { useNavigate } from 'react-router-dom';
@@ -26,8 +27,11 @@ const Sidebar = () => {
       <button className="button-big icon-button-b">
         <FontAwesomeIcon icon={faHome} />
       </button>
-      <button className="button icon-button">
-        <FontAwesomeIcon icon={faBriefcase} />
+      <button className="button icon-button" onClick={() => navigate('/create-report')}>
+        <FontAwesomeIcon icon={faFileAlt} /> {/* Icon for creating reports */}
+      </button>
+      <button className="button icon-button" onClick={() => navigate('/view-report')}>
+        <FontAwesomeIcon icon={faNewspaper} /> {/* Icon for viewing reports */}
       </button>
       <button className="button icon-button" onClick={() => navigate('/bulletins')}>
         <FontAwesomeIcon icon={faBullhorn} />
@@ -46,4 +50,3 @@ const Sidebar = () => {
 };
 
 export default Sidebar;
-

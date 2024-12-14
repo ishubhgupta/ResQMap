@@ -117,7 +117,7 @@ const Chatbot = () => {
                     <img
                       src={sunImage} // Replace with actual image path or URL
                       alt="Bot"
-                      className="bot-image"
+                      className="bot-image-1"
                     />
                   </div>
                 )}
