@@ -10,4 +10,6 @@ export const NewsProvider = ({ children }) => {
             {children}
         </NewsContext.Provider>
     );
+
 };
+
