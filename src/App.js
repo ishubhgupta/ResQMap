@@ -20,6 +20,7 @@ import NewsTicker from './Components/NewTicker';
 import CreateReport from './Components/CreateReport';
 import ViewReport from './Components/ViewReports';
 import UpdateReport from "./Components/UpdateReport";
+import AboutUs from './Components/AboutUs';
 
 const Home = ({ handleLocationFetched, userLocation }) => {
   const navigate = useNavigate();
@@ -87,6 +88,7 @@ const App = () => {
         <Route path="/create-report" element={<CreateReport />} />
         <Route path="/view-report" element={<ViewReport />} />
         <Route path="/update-report/:id" element={<UpdateReport />} />
+        <Route path="/about-us" element={<AboutUs />} />
       </Routes>
     </Router>
   );

@@ -48,7 +48,7 @@ const UpdateReport = () => {
       await axios.patch(`http://localhost:9000/api/missing-reports/${id}`, updatedReport, {
         withCredentials: true,
       });
-      navigate("/view-reports");
+      navigate("/view-report");
     } catch (err) {
       setError("Failed to update the report.");
     }
