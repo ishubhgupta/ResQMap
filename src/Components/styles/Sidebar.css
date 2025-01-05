@@ -45,6 +45,15 @@
     align-items: center;
     gap: 10px;
   }
+  .icon-button-a {
+    font-size: 2rem; /* Scale the entire button */
+    display: flex;
+    /* padding: 1.5 2.5rem; */
+    align-items: center;
+    gap: 10px;
+    padding: 0.7rem 1rem;
+    background-color:rgba(255, 140, 0, 1);
+  }
   
   .bot-image {
     width: 100%;
