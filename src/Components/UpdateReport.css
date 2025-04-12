@@ -1,0 +1,120 @@
+.update-report-container {
+  padding-top: 2rem;
+  padding-bottom: 4rem;
+  background-color: #f8fafc;
+  min-height: 100vh;
+}
+
+/* Header styling */
+.home-button {
+  margin-right: 1rem;
+  border-radius: 20px;
+  background-color: white;
+  color: #1e40af;
+  border: 1px solid #1e40af;
+  padding: 5px 15px;
+  font-weight: 500;
+  transition: all 0.2s;
+}
+
+.home-button:hover {
+  background-color: #1e40af;
+  color: white;
+}
+
+.page-title {
+  margin: 0 auto;
+  color: #1e40af;
+  font-weight: 600;
+  font-size: 1.8rem;
+}
+
+/* Form styling */
+.update-form-paper {
+  padding: 2rem;
+  border-radius: 12px;
+  background-color: white;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+  border-top: 5px solid #2563eb;
+}
+
+.section-title {
+  color: #1e40af;
+  font-weight: 600;
+  font-size: 1.3rem;
+  margin-bottom: 1rem;
+}
+
+.form-field {
+  margin-bottom: 1rem;
+}
+
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+  margin-top: 2rem;
+}
+
+.cancel-button {
+  border-radius: 8px;
+  padding: 0.6rem 1.5rem;
+  text-transform: none;
+  font-weight: 500;
+  transition: all 0.3s;
+}
+
+.cancel-button:hover {
+  background-color: rgba(211, 47, 47, 0.1);
+}
+
+.update-button {
+  background-color: #2563eb;
+  color: white;
+  border-radius: 8px;
+  padding: 0.6rem 1.5rem;
+  text-transform: none;
+  font-weight: 600;
+  transition: all 0.3s;
+}
+
+.update-button:hover {
+  background-color: #1d4ed8;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(37, 99, 235, 0.3);
+}
+
+/* Loading state */
+.loading-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 3rem 0;
+}
+
+.loading-text {
+  margin-top: 1.5rem;
+  color: #4b5563;
+  font-weight: 500;
+}
+
+/* Responsive styles */
+@media (max-width: 768px) {
+  .update-form-paper {
+    padding: 1.5rem;
+  }
+
+  .page-title {
+    font-size: 1.5rem;
+  }
+
+  .form-actions {
+    flex-direction: column-reverse;
+  }
+
+  .update-button,
+  .cancel-button {
+    width: 100%;
+  }
+}
