@@ -31,7 +31,7 @@ const Sidebar = () => {
     { path: "/view-report", icon: faClipboardList, label: "View Reports" },
     { path: "/bulletins", icon: faBullhorn, label: "News Bulletins" },
     { path: "/about-us", icon: faInfoCircle, label: "About Us" },
-    { path: "/donate", icon: faHandHoldingDollar, label: "Donate" },
+    { path: "/donate", icon: faHandHoldingDollar, label: "Donate" }, // Update the path
     { path: "/settings", icon: faGear, label: "Settings" },
   ];
 
