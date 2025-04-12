@@ -35,7 +35,7 @@ const Home = ({ handleLocationFetched, userLocation }) => {
   const sampleForecastData = [
     {
       day: "Monday",
-      high: 32,
+      high: 40,
       low: 24,
       condition: "Sunny",
       precipitation: "0%",
@@ -47,7 +47,7 @@ const Home = ({ handleLocationFetched, userLocation }) => {
     },
     {
       day: "Tuesday",
-      high: 30,
+      high: 40,
       low: 23,
       condition: "Partly Cloudy",
       precipitation: "10%",
@@ -59,7 +59,7 @@ const Home = ({ handleLocationFetched, userLocation }) => {
     },
     {
       day: "Wednesday",
-      high: 29,
+      high: 41,
       low: 22,
       condition: "Cloudy",
       precipitation: "30%",
@@ -71,7 +71,7 @@ const Home = ({ handleLocationFetched, userLocation }) => {
     },
     {
       day: "Thursday",
-      high: 27,
+      high: 43,
       low: 21,
       condition: "Rain",
       precipitation: "80%",
@@ -83,7 +83,7 @@ const Home = ({ handleLocationFetched, userLocation }) => {
     },
     {
       day: "Friday",
-      high: 28,
+      high: 42,
       low: 22,
       condition: "Thunderstorms",
       precipitation: "70%",
@@ -95,7 +95,7 @@ const Home = ({ handleLocationFetched, userLocation }) => {
     },
     {
       day: "Saturday",
-      high: 31,
+      high: 42,
       low: 23,
       condition: "Sunny",
       precipitation: "0%",
@@ -107,7 +107,7 @@ const Home = ({ handleLocationFetched, userLocation }) => {
     },
     {
       day: "Sunday",
-      high: 33,
+      high: 39,
       low: 25,
       condition: "Clear",
       precipitation: "0%",
@@ -205,7 +205,7 @@ const Home = ({ handleLocationFetched, userLocation }) => {
             <div className="metrics-grid">
               {/* Temperature Trend Graph - New and Improved */}
               <div className="temperature-graph">
-                <h3 className="graph-title">Temperature Trend</h3>
+                {/* <h3 className="graph-title">Temperature Trend</h3> */}
                 <div className="temp-graph-enhanced">
                   <div className="temp-graph-container">
                     <div className="temp-axis-y">
