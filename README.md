@@ -3,9 +3,6 @@
 <img src="public/images/logo.png" alt="Sahej Logo" width="200">
 
 <h3>A comprehensive platform integrating real-time weather monitoring, disaster reporting, missing person tracking, and relief coordination for emergency response.</h3><br>
-## 📖 Overview
-
-Sahej is a comprehensive disaster management platform designed to provide real-time assistance during emergencies and natural disasters. The platform integrates weather monitoring, disaster reporting, missing person reports, and resource coordination to help communities better prepare for and respond to crisis situations.
 
 ## 🌟 Key Features
 
