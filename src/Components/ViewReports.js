@@ -2,11 +2,6 @@ import React, { useState, useEffect } from "react";
 import {
   TextField,
   Button,
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableRow,
   Typography,
   IconButton,
   CircularProgress,
@@ -18,9 +13,11 @@ import {
   Card,
   CardContent,
   Chip,
-  Divider,
-  TableContainer,
-  Link as MuiLink,
+  InputAdornment,
+  Avatar,
+  Tooltip,
+  ToggleButtonGroup,
+  ToggleButton,
 } from "@mui/material";
 import {
   Delete as DeleteIcon,
@@ -28,10 +25,16 @@ import {
   Home as HomeIcon,
   Search as SearchIcon,
   Person as PersonIcon,
+  FilterList as FilterIcon,
+  Clear as ClearIcon,
+  NearMe as LocationIcon,
+  Today as CalendarIcon,
+  Description as DescriptionIcon,
+  PersonSearch as PersonSearchIcon,
 } from "@mui/icons-material";
 import axios from "axios";
 import { useNavigate, Link } from "react-router-dom";
-import "./ViewReports.css"; // We'll create this file for custom styles
+import styles from "./styles/ViewReports.module.css"; // Updated to use CSS modules
 
 const ViewReports = () => {
   const [reports, setReports] = useState([]);
@@ -44,8 +47,10 @@ const ViewReports = () => {
     placeOfDisappearance: "",
   });
   const [isMyReports, setIsMyReports] = useState(false);
+  const [showAdvancedSearch, setShowAdvancedSearch] = useState(false);
+  const [searchTerm, setSearchTerm] = useState("");
 
-  const navigate = useNavigate(); // Use useNavigate
+  const navigate = useNavigate();
 
   const fetchReports = async () => {
     try {
@@ -54,6 +59,7 @@ const ViewReports = () => {
         "http://localhost:9000/api/missing-reports"
       );
       setReports(response.data.reports);
+      setIsMyReports(false);
       setLoading(false);
     } catch (err) {
       setError("Failed to fetch reports.");
@@ -100,6 +106,32 @@ const ViewReports = () => {
     }
   };
 
+  const handleQuickSearch = () => {
+    const criteria = {};
+    if (searchTerm) {
+      // Split the search term by spaces to check if it could be a name or place
+      const terms = searchTerm.split(" ");
+
+      // If it's a single word, it could be a name or location
+      if (terms.length === 1) {
+        criteria.name = searchTerm;
+        criteria.placeOfDisappearance = searchTerm;
+      } else {
+        // If multiple words, more likely to be a full name
+        criteria.name = searchTerm;
+      }
+
+      // If it's numeric, it could be an age
+      if (!isNaN(searchTerm)) {
+        criteria.age = searchTerm;
+      }
+    }
+
+    // Set our search criteria and then perform the search
+    setSearchCriteria(criteria);
+    handleSearch();
+  };
+
   const handleDelete = async (reportId) => {
     try {
       await axios.delete(
@@ -116,7 +148,7 @@ const ViewReports = () => {
   };
 
   const handleUpdate = (reportId) => {
-    navigate(`/update-report/${reportId}`); // Use navigate instead of history.push
+    navigate(`/update-report/${reportId}`);
   };
 
   const handleInputChange = (e) => {
@@ -126,268 +158,373 @@ const ViewReports = () => {
     });
   };
 
-  return (
-    <Container maxWidth="xl" className="reports-container">
-      <Paper className="page-header">
-        <Link to="/home" style={{ textDecoration: "none" }}>
-          <Button startIcon={<HomeIcon />} className="home-button">
-            Home
-          </Button>
-        </Link>
+  const resetSearch = () => {
+    setSearchCriteria({
+      name: "",
+      gender: "",
+      age: "",
+      placeOfDisappearance: "",
+    });
+    setSearchTerm("");
+    fetchReports();
+  };
 
-        <Typography variant="h4" className="page-title">
-          Missing Persons Reports
+  const formatDate = (dateString) => {
+    const options = { year: "numeric", month: "short", day: "numeric" };
+    return new Date(dateString).toLocaleDateString(undefined, options);
+  };
+
+  return (
+    <Container maxWidth="xl" className={styles.reportsContainer}>
+      <Paper className={styles.pageHeader}>
+        <Link to="/home" className={styles.homeLink}>
+          <HomeIcon className={styles.homeIcon} />
+          <span>Back to Home</span>
+        </Link>
+        <Typography variant="h4" className={styles.pageTitle}>
+          Missing Persons Database
         </Typography>
+        <Box className={styles.spacer}></Box>{" "}
+        {/* Added spacer for balanced centering */}
       </Paper>
 
       {error && (
-        <Alert severity="error" sx={{ mb: 3 }} className="error-alert">
+        <Alert
+          severity="error"
+          className={styles.errorAlert}
+          onClose={() => setError("")}
+        >
           {error}
         </Alert>
       )}
 
-      <Paper elevation={3} className="search-panel">
-        <Box className="search-header">
-          <SearchIcon className="search-icon" />
-          <Typography variant="h6" className="section-title">
-            Search Reports
-          </Typography>
-        </Box>
-        <Divider className="search-divider" />
-
-        <Grid container spacing={3} className="search-form">
-          <Grid item xs={12} sm={6} md={3}>
-            <TextField
-              name="name"
-              label="Name"
-              value={searchCriteria.name}
-              onChange={handleInputChange}
-              fullWidth
-              variant="outlined"
-              className="search-field"
-              placeholder="Enter name"
-              InputProps={{
-                className: "search-input",
-              }}
-            />
-          </Grid>
-          <Grid item xs={12} sm={6} md={3}>
-            <TextField
-              name="gender"
-              label="Gender"
-              value={searchCriteria.gender}
-              onChange={handleInputChange}
-              fullWidth
-              variant="outlined"
-              className="search-field"
-              placeholder="Male/Female/Other"
-              InputProps={{
-                className: "search-input",
-              }}
-            />
-          </Grid>
-          <Grid item xs={12} sm={6} md={3}>
-            <TextField
-              name="age"
-              label="Age"
-              value={searchCriteria.age}
-              onChange={handleInputChange}
-              fullWidth
-              variant="outlined"
-              className="search-field"
-              placeholder="Enter age"
-              InputProps={{
-                className: "search-input",
-              }}
-            />
-          </Grid>
-          <Grid item xs={12} sm={6} md={3}>
-            <TextField
-              name="placeOfDisappearance"
-              label="Place of Disappearance"
-              value={searchCriteria.placeOfDisappearance}
-              onChange={handleInputChange}
-              fullWidth
-              variant="outlined"
-              className="search-field"
-              placeholder="Enter location"
-              InputProps={{
-                className: "search-input",
-              }}
-            />
-          </Grid>
-        </Grid>
-
-        <Box className="button-container">
-          <Button
-            variant="contained"
-            color="primary"
-            onClick={handleSearch}
-            startIcon={<SearchIcon />}
-            className="search-button"
+      <Box className={styles.viewControls}>
+        <ToggleButtonGroup
+          value={isMyReports ? "my" : "all"}
+          exclusive
+          onChange={(e, newValue) => {
+            if (newValue === null) return;
+            if (newValue === "my") {
+              fetchReportsByUser();
+            } else {
+              fetchReports();
+            }
+          }}
+          aria-label="reports view"
+          className={styles.reportsToggle}
+        >
+          <ToggleButton
+            value="all"
+            aria-label="all reports"
+            className={styles.toggleButton}
           >
-            Search Reports
-          </Button>
-          <Button
-            variant="contained"
-            color="secondary"
-            onClick={fetchReportsByUser}
-            startIcon={<PersonIcon />}
-            className="my-reports-button"
+            <PersonSearchIcon className={styles.toggleIcon} />
+            All Missing Reports
+          </ToggleButton>
+          <ToggleButton
+            value="my"
+            aria-label="my reports"
+            className={styles.toggleButton}
           >
+            <PersonIcon className={styles.toggleIcon} />
             My Reports
-          </Button>
+          </ToggleButton>
+        </ToggleButtonGroup>
+      </Box>
+
+      <Paper className={styles.searchContainer}>
+        <Box className={styles.mainSearchBar}>
+          <Box className={styles.searchFieldContainer}>
+            <TextField
+              fullWidth
+              placeholder="Search by name, age, location..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              onKeyPress={(e) => e.key === "Enter" && handleQuickSearch()}
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment position="start">
+                    <SearchIcon color="primary" className={styles.searchIcon} />
+                  </InputAdornment>
+                ),
+                endAdornment: searchTerm && (
+                  <InputAdornment position="end">
+                    <IconButton onClick={() => setSearchTerm("")} size="small">
+                      <ClearIcon fontSize="small" />
+                    </IconButton>
+                  </InputAdornment>
+                ),
+                className: styles.searchInput,
+              }}
+            />
+          </Box>
+          <Box className={styles.searchActions}>
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={handleQuickSearch}
+              className={styles.searchButton}
+            >
+              Search
+            </Button>
+            <Button
+              variant="outlined"
+              className={styles.filterButton}
+              startIcon={<FilterIcon />}
+              onClick={() => setShowAdvancedSearch(!showAdvancedSearch)}
+            >
+              {showAdvancedSearch ? "Hide Filters" : "Show Filters"}
+            </Button>
+          </Box>
         </Box>
+
+        {showAdvancedSearch && (
+          <Box className={styles.advancedSearch}>
+            <Typography variant="subtitle2" className={styles.filterTitle}>
+              Advanced Search Filters
+            </Typography>
+            <Grid container spacing={2}>
+              <Grid item xs={12} sm={6} md={3}>
+                <TextField
+                  name="name"
+                  label="Name"
+                  value={searchCriteria.name}
+                  onChange={handleInputChange}
+                  fullWidth
+                  variant="outlined"
+                  size="small"
+                />
+              </Grid>
+              <Grid item xs={12} sm={6} md={3}>
+                <TextField
+                  name="gender"
+                  label="Gender"
+                  value={searchCriteria.gender}
+                  onChange={handleInputChange}
+                  fullWidth
+                  variant="outlined"
+                  size="small"
+                  select
+                  SelectProps={{
+                    native: true,
+                  }}
+                >
+                  <option value=""></option>
+                  <option value="Male">Male</option>
+                  <option value="Female">Female</option>
+                  <option value="Other">Other</option>
+                </TextField>
+              </Grid>
+              <Grid item xs={12} sm={6} md={3}>
+                <TextField
+                  name="age"
+                  label="Age"
+                  value={searchCriteria.age}
+                  onChange={handleInputChange}
+                  fullWidth
+                  variant="outlined"
+                  size="small"
+                  type="number"
+                />
+              </Grid>
+              <Grid item xs={12} sm={6} md={3}>
+                <TextField
+                  name="placeOfDisappearance"
+                  label="Place of Disappearance"
+                  value={searchCriteria.placeOfDisappearance}
+                  onChange={handleInputChange}
+                  fullWidth
+                  variant="outlined"
+                  size="small"
+                />
+              </Grid>
+            </Grid>
+            <Box className={styles.advancedSearchActions}>
+              <Button
+                variant="outlined"
+                color="secondary"
+                onClick={resetSearch}
+                startIcon={<ClearIcon />}
+              >
+                Clear All
+              </Button>
+              <Button
+                variant="contained"
+                color="primary"
+                onClick={handleSearch}
+                startIcon={<SearchIcon />}
+              >
+                Apply Filters
+              </Button>
+            </Box>
+          </Box>
+        )}
       </Paper>
 
-      <Box className="results-section">
+      <Box className={styles.resultsSection}>
         {loading ? (
-          <Box className="loading-container">
+          <Box className={styles.loadingContainer}>
             <CircularProgress size={60} thickness={4} />
-            <Typography variant="h6" className="loading-text">
+            <Typography variant="h6" className={styles.loadingText}>
               Loading reports...
             </Typography>
           </Box>
         ) : reports.length > 0 ? (
-          <Paper elevation={4} className="table-container">
-            <Box className="table-header-section">
-              <Typography variant="h6" className="table-title">
-                {isMyReports ? "My Reported Cases" : "Missing Persons Database"}
+          <Paper className={styles.resultsContainer}>
+            <Box className={styles.resultsHeader}>
+              <Typography variant="h6" className={styles.resultsTitle}>
+                {isMyReports ? "My Reported Cases" : "Missing Persons Reports"}
               </Typography>
               <Chip
                 label={`${reports.length} ${
                   reports.length === 1 ? "Report" : "Reports"
                 } Found`}
-                className="results-chip"
+                color="primary"
+                variant="outlined"
+                className={styles.resultsChip}
               />
             </Box>
-            <TableContainer className="custom-table-container">
-              <Table>
-                <TableHead>
-                  <TableRow className="table-header-row">
-                    <TableCell className="table-header">Name</TableCell>
-                    <TableCell className="table-header">Age</TableCell>
-                    <TableCell className="table-header">Gender</TableCell>
-                    <TableCell className="table-header">
-                      Place of Disappearance
-                    </TableCell>
-                    <TableCell className="table-header">
-                      Disappearance Date
-                    </TableCell>
-                    <TableCell className="table-header">Reported By</TableCell>
-                    <TableCell className="table-header">Photo</TableCell>
-                    <TableCell className="table-header">Description</TableCell>
-                    {isMyReports && (
-                      <TableCell className="table-header actions-header">
-                        Actions
-                      </TableCell>
-                    )}
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  {reports.map((report) => (
-                    <TableRow key={report._id} className="table-row">
-                      <TableCell className="name-cell">{report.name}</TableCell>
-                      <TableCell className="age-cell">{report.age}</TableCell>
-                      <TableCell className="gender-cell">
-                        <Chip
-                          label={report.gender}
-                          color={
-                            report.gender === "Male"
-                              ? "primary"
-                              : report.gender === "Female"
-                              ? "secondary"
-                              : "default"
-                          }
-                          size="small"
-                          className={`gender-chip gender-${report.gender.toLowerCase()}`}
+
+            <Box className={styles.reportCardsContainer}>
+              {reports.map((report) => (
+                <Card key={report._id} className={styles.reportCard}>
+                  <Box className={styles.reportCardHeader}>
+                    <Typography variant="h6" className={styles.reportName}>
+                      {report.name}
+                    </Typography>
+                    <Chip
+                      label={report.gender}
+                      color={
+                        report.gender === "Male"
+                          ? "primary"
+                          : report.gender === "Female"
+                          ? "secondary"
+                          : "default"
+                      }
+                      size="small"
+                      className={`${styles.genderChip} ${
+                        styles[`gender${report.gender.toLowerCase()}`]
+                      }`}
+                    />
+                  </Box>
+
+                  <Box className={styles.reportContent}>
+                    <Box className={styles.reportPhotoSection}>
+                      {report.photoURL ? (
+                        <img
+                          src={`http://localhost:9000/${report.photoURL}`}
+                          alt={report.name}
+                          className={styles.reportPhoto}
                         />
-                      </TableCell>
-                      <TableCell className="place-cell">
-                        {report.placeOfDisappearance}
-                      </TableCell>
-                      <TableCell className="date-cell">
-                        {new Date(
-                          report.disappearanceDate
-                        ).toLocaleDateString()}
-                      </TableCell>
-                      <TableCell className="reporter-cell">
-                        {report.reportedBy?.name || "Anonymous"}
-                      </TableCell>
-                      <TableCell className="photo-cell">
-                        {report.photoURL ? (
-                          <div className="photo-container">
-                            <img
-                              src={`http://localhost:9000/${report.photoURL}`}
-                              alt="Missing person"
-                              className="person-photo"
-                            />
-                          </div>
-                        ) : (
-                          <Typography variant="body2" color="textSecondary">
-                            No Photo
-                          </Typography>
-                        )}
-                      </TableCell>
-                      <TableCell className="description-cell">
-                        <div className="description-content">
-                          {report.description || "No description available"}
-                        </div>
-                      </TableCell>
-                      {isMyReports && (
-                        <TableCell className="actions-cell">
-                          <Box className="action-buttons">
-                            <IconButton
-                              color="primary"
-                              onClick={() => handleUpdate(report._id)}
-                              className="edit-button"
-                              size="small"
-                              title="Edit Report"
-                            >
-                              <EditIcon />
-                            </IconButton>
-                            <IconButton
-                              color="error"
-                              onClick={() => handleDelete(report._id)}
-                              className="delete-button"
-                              size="small"
-                              title="Delete Report"
-                            >
-                              <DeleteIcon />
-                            </IconButton>
-                          </Box>
-                        </TableCell>
+                      ) : (
+                        <Avatar className={styles.reportAvatar}>
+                          {report.name.charAt(0)}
+                        </Avatar>
                       )}
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            </TableContainer>
+                    </Box>
+
+                    <Box className={styles.reportDetails}>
+                      <Box className={styles.detailItem}>
+                        <PersonIcon className={styles.detailIcon} />
+                        <Typography variant="body2">
+                          <span className={styles.detailLabel}>Age:</span>{" "}
+                          {report.age} years
+                        </Typography>
+                      </Box>
+
+                      <Box className={styles.detailItem}>
+                        <LocationIcon className={styles.detailIcon} />
+                        <Typography variant="body2">
+                          <span className={styles.detailLabel}>
+                            Last seen at:
+                          </span>{" "}
+                          {report.placeOfDisappearance}
+                        </Typography>
+                      </Box>
+
+                      <Box className={styles.detailItem}>
+                        <CalendarIcon className={styles.detailIcon} />
+                        <Typography variant="body2">
+                          <span className={styles.detailLabel}>Date:</span>{" "}
+                          {formatDate(report.disappearanceDate)}
+                        </Typography>
+                      </Box>
+
+                      {report.description && (
+                        <Box className={styles.detailItem}>
+                          <DescriptionIcon className={styles.detailIcon} />
+                          <Typography
+                            variant="body2"
+                            className={styles.reportDescription}
+                          >
+                            <span className={styles.detailLabel}>
+                              Description:
+                            </span>{" "}
+                            {report.description}
+                          </Typography>
+                        </Box>
+                      )}
+                    </Box>
+                  </Box>
+
+                  <Box className={styles.reportFooter}>
+                    <Typography
+                      variant="caption"
+                      className={styles.reportReporter}
+                    >
+                      Reported by: {report.reportedBy?.name || "Anonymous"}
+                    </Typography>
+
+                    {isMyReports && (
+                      <Box className={styles.reportActions}>
+                        <Tooltip title="Edit Report">
+                          <IconButton
+                            color="primary"
+                            onClick={() => handleUpdate(report._id)}
+                            size="small"
+                            className={styles.editButton}
+                          >
+                            <EditIcon fontSize="small" />
+                          </IconButton>
+                        </Tooltip>
+                        <Tooltip title="Delete Report">
+                          <IconButton
+                            color="error"
+                            onClick={() => handleDelete(report._id)}
+                            size="small"
+                            className={styles.deleteButton}
+                          >
+                            <DeleteIcon fontSize="small" />
+                          </IconButton>
+                        </Tooltip>
+                      </Box>
+                    )}
+                  </Box>
+                </Card>
+              ))}
+            </Box>
           </Paper>
         ) : (
-          <Card className="no-results">
+          <Card className={styles.noResults}>
             <CardContent>
-              <Typography variant="h6" align="center" color="textSecondary">
-                No reports found matching your criteria.
+              <div className={styles.noResultsIcon}>
+                <SearchIcon fontSize="large" />
+              </div>
+              <Typography variant="h6" className={styles.noResultsTitle}>
+                No reports found
               </Typography>
-              <Typography
-                variant="body2"
-                align="center"
-                color="textSecondary"
-                sx={{ mt: 1 }}
-              >
+              <Typography variant="body2" className={styles.noResultsText}>
                 Try adjusting your search parameters or create a new report.
               </Typography>
-              <Box sx={{ display: "flex", justifyContent: "center", mt: 2 }}>
-                <Button
-                  component={Link}
-                  to="/create-report"
-                  variant="contained"
-                  color="primary"
-                >
-                  Create New Report
-                </Button>
-              </Box>
+              <Button
+                component={Link}
+                to="/create-report"
+                variant="contained"
+                color="primary"
+                className={styles.createReportButton}
+              >
+                Create New Report
+              </Button>
             </CardContent>
           </Card>
         )}
