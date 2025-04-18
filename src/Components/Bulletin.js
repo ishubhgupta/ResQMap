@@ -21,7 +21,7 @@ import {
   FaDownload,
   FaShareAlt,
   FaBookmark,
-  FaHome
+  FaHome,
 } from "react-icons/fa";
 
 function Bulletin() {
@@ -40,11 +40,21 @@ function Bulletin() {
     { id: "all", name: "All News", icon: <FaNewspaper />, color: "#455a64" },
     { id: "flood", name: "Flood", icon: <FaWater />, color: "#1976d2" },
     { id: "fire", name: "Fire", icon: <FaFire />, color: "#d32f2f" },
-    { id: "earthquake", name: "Earthquake", icon: <FaGlobeAsia />, color: "#7b1fa2" },
+    {
+      id: "earthquake",
+      name: "Earthquake",
+      icon: <FaGlobeAsia />,
+      color: "#7b1fa2",
+    },
     { id: "cyclone", name: "Cyclone", icon: <FaWind />, color: "#0097a7" },
-    { id: "landslide", name: "Landslide", icon: <FaMountain />, color: "#8d6e63" },
+    {
+      id: "landslide",
+      name: "Landslide",
+      icon: <FaMountain />,
+      color: "#8d6e63",
+    },
     { id: "drought", name: "Drought", icon: <FaSun />, color: "#ff8f00" },
-    { id: "pandemic", name: "Pandemic", icon: <FaViruses />, color: "#c2185b" }
+    { id: "pandemic", name: "Pandemic", icon: <FaViruses />, color: "#c2185b" },
   ];
 
   // Fetch news data
@@ -65,26 +75,38 @@ function Bulletin() {
           const description = article.description?.toLowerCase() || "";
           const text = title + " " + content + " " + description;
 
-          if (text.includes("flood") || text.includes("rain") || text.includes("storm")) {
+          if (
+            text.includes("flood") ||
+            text.includes("rain") ||
+            text.includes("storm")
+          ) {
             category = "Flood";
           } else if (text.includes("fire")) {
             category = "Fire";
           } else if (text.includes("earthquake")) {
             category = "Earthquake";
-          } else if (text.includes("cyclone") || text.includes("hurricane") || text.includes("typhoon")) {
+          } else if (
+            text.includes("cyclone") ||
+            text.includes("hurricane") ||
+            text.includes("typhoon")
+          ) {
             category = "Cyclone";
           } else if (text.includes("landslide")) {
             category = "Landslide";
           } else if (text.includes("drought")) {
             category = "Drought";
-          } else if (text.includes("covid") || text.includes("pandemic") || text.includes("virus")) {
+          } else if (
+            text.includes("covid") ||
+            text.includes("pandemic") ||
+            text.includes("virus")
+          ) {
             category = "Pandemic";
           }
 
-          return { 
-            ...article, 
+          return {
+            ...article,
             category,
-            categoryId: category.toLowerCase()
+            categoryId: category.toLowerCase(),
           };
         });
 
@@ -131,28 +153,28 @@ function Bulletin() {
   };
 
   const toggleCategory = (categoryId) => {
-    if (categoryId === 'all') {
+    if (categoryId === "all") {
       setSelectedCategories([]);
       return;
     }
-    
-    setSelectedCategories(prev => 
-      prev.includes(categoryId) 
-        ? prev.filter(cat => cat !== categoryId) 
+
+    setSelectedCategories((prev) =>
+      prev.includes(categoryId)
+        ? prev.filter((cat) => cat !== categoryId)
         : [...prev, categoryId]
     );
   };
 
   const filterNews = () => {
     let filtered = news;
-    
+
     // Apply category filter
     if (selectedCategories.length > 0) {
-      filtered = filtered.filter(article => 
+      filtered = filtered.filter((article) =>
         selectedCategories.includes(article.categoryId)
       );
     }
-    
+
     // Apply search filter
     if (searchTerm) {
       filtered = filtered.filter(
@@ -165,18 +187,18 @@ function Bulletin() {
           article.category.toLowerCase().includes(searchTerm.toLowerCase())
       );
     }
-    
+
     return filtered;
   };
 
   const getCategoryColor = (category) => {
-    const cat = categories.find(c => c.name === category);
+    const cat = categories.find((c) => c.name === category);
     return cat ? cat.color : "#455a64";
   };
 
   const getCategoryIcon = (category) => {
     const categoryLower = category.toLowerCase();
-    const cat = categories.find(c => c.id === categoryLower);
+    const cat = categories.find((c) => c.id === categoryLower);
     return cat ? cat.icon : <FaNewspaper />;
   };
 
@@ -192,11 +214,11 @@ function Bulletin() {
         >
           <FaHome /> Home
         </button>
-        
+
         <h1 className={styles.headerTitle}>
           <FaNewspaper className={styles.headerIcon} /> Disaster News Bulletin
         </h1>
-        
+
         <div className={styles.headerControls}>
           <div className={styles.searchContainer}>
             <FaSearch className={styles.searchIcon} />
@@ -208,12 +230,12 @@ function Bulletin() {
               className={styles.searchInput}
             />
           </div>
-          
-          <button 
+
+          <button
             className={styles.filterToggleButton}
             onClick={() => setShowFilters(!showFilters)}
           >
-            <FaFilter /> {showFilters ? 'Hide Filters' : 'Show Filters'}
+            <FaFilter /> {showFilters ? "Hide Filters" : "Show Filters"}
           </button>
         </div>
       </div>
@@ -222,7 +244,7 @@ function Bulletin() {
         <div className={styles.categoryFilterContainer}>
           <div className={styles.filterHeader}>
             <h3>Filter by Category</h3>
-            <button 
+            <button
               className={styles.clearFilters}
               onClick={() => setSelectedCategories([])}
               disabled={selectedCategories.length === 0}
@@ -231,18 +253,18 @@ function Bulletin() {
             </button>
           </div>
           <div className={styles.categoryButtons}>
-            {categories.map(category => (
+            {categories.map((category) => (
               <button
                 key={category.id}
                 className={`${styles.categoryFilterButton} ${
-                  (selectedCategories.length === 0 && category.id === 'all') || 
-                  selectedCategories.includes(category.id) 
-                    ? styles.active 
-                    : ''
+                  (selectedCategories.length === 0 && category.id === "all") ||
+                  selectedCategories.includes(category.id)
+                    ? styles.active
+                    : ""
                 }`}
                 onClick={() => toggleCategory(category.id)}
                 style={{
-                  '--category-color': category.color
+                  "--category-color": category.color,
                 }}
               >
                 <span className={styles.categoryIcon}>{category.icon}</span>
@@ -260,8 +282,8 @@ function Bulletin() {
         {searchTerm && (
           <span className={styles.searchInfo}>
             Search results for: <strong>"{searchTerm}"</strong>
-            <button 
-              className={styles.clearSearch} 
+            <button
+              className={styles.clearSearch}
               onClick={() => setSearchTerm("")}
               title="Clear search"
             >
@@ -315,7 +337,9 @@ function Bulletin() {
                 </div>
                 <div className={styles.newsCardContent}>
                   <div className={styles.newsMeta}>
-                    <span className={styles.newsSource}>{article.source.name}</span>
+                    <span className={styles.newsSource}>
+                      {article.source.name}
+                    </span>
                     <span className={styles.newsDate}>
                       <FaRegClock /> {formatDate(article.publishedAt)}
                     </span>
@@ -342,7 +366,7 @@ function Bulletin() {
               <FaSearch className={styles.noResultsIcon} />
               <h3>No results found</h3>
               <p>Try adjusting your search terms or category filters</p>
-              <button 
+              <button
                 className={styles.resetSearchButton}
                 onClick={() => {
                   setSearchTerm("");
@@ -358,7 +382,10 @@ function Bulletin() {
 
       {selectedNews && (
         <div className={styles.modalOverlay} onClick={closeModal}>
-          <div className={styles.newsModal} onClick={(e) => e.stopPropagation()}>
+          <div
+            className={styles.newsModal}
+            onClick={(e) => e.stopPropagation()}
+          >
             <button className={styles.modalClose} onClick={closeModal}>
               <FaTimes />
             </button>
@@ -374,21 +401,29 @@ function Bulletin() {
               </span>
               <h2>{selectedNews.title}</h2>
               <div className={styles.modalMeta}>
-                <span className={styles.modalSource}>{selectedNews.source.name}</span>
+                <span className={styles.modalSource}>
+                  {selectedNews.source.name}
+                </span>
                 <span className={styles.modalDate}>
                   <FaRegClock /> {formatDate(selectedNews.publishedAt)} at{" "}
                   {formatTime(selectedNews.publishedAt)}
                 </span>
               </div>
-              
+
               <div className={styles.modalActions}>
-                <button className={`${styles.modalActionButton} ${styles.bookmark}`}>
+                <button
+                  className={`${styles.modalActionButton} ${styles.bookmark}`}
+                >
                   <FaBookmark /> Save
                 </button>
-                <button className={`${styles.modalActionButton} ${styles.share}`}>
+                <button
+                  className={`${styles.modalActionButton} ${styles.share}`}
+                >
                   <FaShareAlt /> Share
                 </button>
-                <button className={`${styles.modalActionButton} ${styles.download}`}>
+                <button
+                  className={`${styles.modalActionButton} ${styles.download}`}
+                >
                   <FaDownload /> Download
                 </button>
               </div>
@@ -406,7 +441,9 @@ function Bulletin() {
 
             <div className={styles.modalContent}>
               {selectedNews.description && (
-                <p className={styles.modalDescription}>{selectedNews.description}</p>
+                <p className={styles.modalDescription}>
+                  {selectedNews.description}
+                </p>
               )}
 
               {selectedNews.content && (
@@ -427,7 +464,7 @@ function Bulletin() {
                     <span className={styles.categoryTag}>Emergency</span>
                   </div>
                 </div>
-                
+
                 {selectedNews.url && (
                   <a
                     href={selectedNews.url}
