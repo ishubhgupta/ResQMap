@@ -350,7 +350,7 @@ const MapUpdater = ({ weatherData, param, cityName }) => {
         const timer = setTimeout(() => {
           map.setView(weatherData[0].coordinates, 8);
           mapInitializedRef.current = true;
-        }, 100);
+        }, 500); // Increased delay to ensure map is fully initialized
 
         return () => clearTimeout(timer);
       } catch (err) {
@@ -685,15 +685,15 @@ const MapComponent = ({ latitude, longitude }) => {
             zoom={8}
             style={{ height: "100%", width: "100%" }}
             className="leaflet-map"
-            whenCreated={(map) => {
-              // Add a small delay to ensure map is fully initialized
+            whenReady={(map) => {
+              // Using whenReady instead of whenCreated for more reliability
               setTimeout(() => {
                 try {
-                  map.invalidateSize();
+                  map.target.invalidateSize();
                 } catch (err) {
                   console.error("Error invalidating map size:", err);
                 }
-              }, 200);
+              }, 500); // Increased timeout for better initialization
             }}
           >
             <TileLayer
@@ -703,47 +703,73 @@ const MapComponent = ({ latitude, longitude }) => {
               maxZoom={19}
             />
 
-            {/* Render the weather overlay grid */}
-            <MapUpdater
-              weatherData={weatherData}
-              param={param}
-              cityName={cityName}
-            />
+            {/* Add MapInfo component to safely setup the map */}
+            <MapInfo position={position} cityName={cityName} />
 
-            {/* Disaster data markers with clustering */}
-            <DisasterMarkers
-              disasterData={disasterData}
-              selectedDisasterTypes={selectedDisasterTypes}
-            />
+            {/* Only render these components once weather data is available */}
+            {weatherData.length > 0 && (
+              <>
+                {/* Render the weather overlay grid */}
+                <MapUpdater
+                  weatherData={weatherData}
+                  param={param}
+                  cityName={cityName}
+                />
 
-            {/* Main location marker */}
-            <Marker position={position} icon={customIcon}>
-              <Popup className="custom-popup">
-                <div className="current-location-popup">
-                  <h3>Your Location</h3>
-                  <p>{cityName}</p>
-                  {weatherData.length > 0 && (
-                    <div className="current-weather-info">
-                      <img
-                        src={`https://openweathermap.org/img/wn/${weatherData[0]?.weather?.icon}.png`}
-                        alt={weatherData[0]?.weather?.description}
-                      />
-                      <p>
-                        {getParamTitle(param)}:{" "}
-                        {Math.round(weatherData[0]?.value * 10) / 10} {unit}
-                      </p>
+                {/* Disaster data markers with clustering */}
+                <DisasterMarkers
+                  disasterData={disasterData}
+                  selectedDisasterTypes={selectedDisasterTypes}
+                />
+
+                {/* Main location marker */}
+                <Marker position={position} icon={customIcon}>
+                  <Popup className="custom-popup">
+                    <div className="current-location-popup">
+                      <h3>Your Location</h3>
+                      <p>{cityName}</p>
+                      <div className="current-weather-info">
+                        <img
+                          src={`https://openweathermap.org/img/wn/${weatherData[0]?.weather?.icon}.png`}
+                          alt={weatherData[0]?.weather?.description}
+                        />
+                        <p>
+                          {getParamTitle(param)}:{" "}
+                          {Math.round(weatherData[0]?.value * 10) / 10} {unit}
+                        </p>
+                      </div>
                     </div>
-                  )}
-                </div>
-              </Popup>
-            </Marker>
+                  </Popup>
+                </Marker>
 
-            <Legend param={param} unit={unit} />
+                <Legend param={param} unit={unit} />
+              </>
+            )}
           </MapContainer>
         )}
       </div>
     </div>
   );
+};
+
+// Add a new component to safely setup the map
+const MapInfo = ({ position, cityName }) => {
+  const map = useMap();
+
+  useEffect(() => {
+    // Use a safe way to handle map initialization
+    const timer = setTimeout(() => {
+      try {
+        map.invalidateSize();
+      } catch (err) {
+        console.error("Error invalidating map size:", err);
+      }
+    }, 300);
+
+    return () => clearTimeout(timer);
+  }, [map]);
+
+  return null;
 };
 
 export default MapComponent;
