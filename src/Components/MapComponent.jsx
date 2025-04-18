@@ -4,20 +4,26 @@ import {
   TileLayer,
   Marker,
   Popup,
-  Rectangle,
   useMap,
   Circle,
+  Tooltip,
 } from "react-leaflet";
-import { Icon } from "leaflet";
+import { Icon, divIcon } from "leaflet";
 import "leaflet/dist/leaflet.css";
 import "./styles/Map.css";
+import MarkerClusterGroup from "react-leaflet-cluster";
 import {
   FaTemperatureHigh,
   FaTint,
   FaWind,
   FaCompress,
   FaCloud,
+  FaFilter,
+  FaChevronDown,
+  FaMapMarkerAlt,
+  FaClock,
 } from "react-icons/fa";
+import disasterData from "./assets/data.json";
 
 // Custom marker icon
 const customIcon = new Icon({
@@ -136,6 +142,194 @@ const getParamIcon = (param) => {
     default:
       return null;
   }
+};
+
+// Format date for better display
+const formatDate = (dateString) => {
+  if (!dateString) return "N/A";
+  return new Date(dateString).toLocaleDateString("en-US", {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
+  });
+};
+
+// Extract disaster type from post content
+const extractDisasterType = (content) => {
+  const content_lower = content ? content.toLowerCase() : "";
+  if (content_lower.includes("flood")) return "flood";
+  if (content_lower.includes("fire")) return "fire";
+  if (content_lower.includes("earthquake")) return "earthquake";
+  if (content_lower.includes("landslide")) return "landslide";
+  if (content_lower.includes("drought")) return "drought";
+  if (content_lower.includes("cyclone")) return "cyclone";
+  return "other";
+};
+
+// Create disaster type icons
+const createDisasterIcon = (type) => {
+  const iconColor = getDisasterColor(type);
+
+  return divIcon({
+    className: "disaster-marker-icon",
+    html: `<div class="disaster-marker" style="background-color: ${iconColor}">
+             <div class="disaster-icon-inner">${getDisasterIconHTML(type)}</div>
+           </div>`,
+    iconSize: [30, 30],
+    iconAnchor: [15, 15],
+  });
+};
+
+// Get disaster icon HTML
+const getDisasterIconHTML = (type) => {
+  switch (type) {
+    case "flood":
+      return '<div style="font-size: 20px">🌊</div>';
+    case "fire":
+      return '<div style="font-size: 20px">🔥</div>';
+    case "earthquake":
+      return '<div style="font-size: 20px">⚡</div>';
+    case "landslide":
+      return '<div style="font-size: 20px">⛰️</div>';
+    case "drought":
+      return '<div style="font-size: 20px">☀️</div>';
+    case "cyclone":
+      return '<div style="font-size: 20px">🌀</div>';
+    default:
+      return '<div style="font-size: 20px">❗</div>';
+  }
+};
+
+// Get color for disaster type
+const getDisasterColor = (type) => {
+  switch (type) {
+    case "flood":
+      return "#1E88E5"; // Blue
+    case "fire":
+      return "#E53935"; // Red
+    case "earthquake":
+      return "#8E24AA"; // Purple
+    case "landslide":
+      return "#6D4C41"; // Brown
+    case "drought":
+      return "#FF9800"; // Orange
+    case "cyclone":
+      return "#00ACC1"; // Cyan
+    default:
+      return "#757575"; // Grey
+  }
+};
+
+// Filter dropdown component
+const DisasterFilterDropdown = ({ selectedTypes, toggleType, allTypes }) => {
+  const [isOpen, setIsOpen] = useState(false);
+
+  return (
+    <div className="disaster-filter-dropdown">
+      <button className="dropdown-toggle" onClick={() => setIsOpen(!isOpen)}>
+        <FaFilter /> Disaster Reports{" "}
+        <FaChevronDown className="dropdown-arrow" />
+      </button>
+
+      {isOpen && (
+        <div className="dropdown-menu">
+          {allTypes.map((type) => (
+            <label key={type} className="dropdown-item">
+              <input
+                type="checkbox"
+                checked={selectedTypes.includes(type)}
+                onChange={() => toggleType(type)}
+              />
+              <span className={`filter-color ${type}`}></span>
+              {type.charAt(0).toUpperCase() + type.slice(1)}
+            </label>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+};
+
+// Disaster Markers Component with clustering
+const DisasterMarkers = ({ disasterData, selectedDisasterTypes }) => {
+  // Process and filter data
+  const processedPosts = disasterData
+    .filter((post) => post.content && post.coordinates)
+    .map((post) => {
+      // Ensure coordinates are in the proper format [latitude, longitude]
+      let coordinates = Array.isArray(post.coordinates)
+        ? post.coordinates.length === 2
+          ? post.coordinates
+          : [28.6139, post.coordinates[0]] // Fix if only one value
+        : [28.6139, post.coordinates]; // Convert single value to array
+
+      const disasterType = extractDisasterType(post.content);
+      return { ...post, coordinates, disasterType };
+    })
+    .filter((post) => selectedDisasterTypes.includes(post.disasterType));
+
+  // Create custom cluster icon
+  const createClusterCustomIcon = function (cluster) {
+    return divIcon({
+      html: `<div class="cluster-icon">
+               <span class="cluster-icon-text">${cluster.getChildCount()}</span>
+             </div>`,
+      className: "custom-marker-cluster",
+      iconSize: [40, 40],
+    });
+  };
+
+  return (
+    <MarkerClusterGroup
+      chunkedLoading
+      iconCreateFunction={createClusterCustomIcon}
+      spiderfyOnMaxZoom={true}
+      showCoverageOnHover={false}
+      zoomToBoundsOnClick={true}
+      maxClusterRadius={60}
+      disableClusteringAtZoom={14}
+    >
+      {processedPosts.map((post, index) => (
+        <Marker
+          key={`disaster-${index}`}
+          position={post.coordinates}
+          icon={createDisasterIcon(post.disasterType)}
+        >
+          <Tooltip className="disaster-tooltip">
+            {post.content.substring(0, 50)}...
+          </Tooltip>
+          <Popup className="custom-popup disaster-popup">
+            <div className="disaster-popup-content">
+              <div className="disaster-popup-header">
+                <span className={`disaster-type-badge ${post.disasterType}`}>
+                  {post.disasterType.toUpperCase()}
+                </span>
+                <span
+                  className={`verified-badge ${
+                    post.verified ? "verified" : "unverified"
+                  }`}
+                >
+                  {post.verified ? "Verified" : "Unverified"}
+                </span>
+              </div>
+              <h3>@{post.username}</h3>
+              <p className="disaster-content">{post.content}</p>
+              <div className="disaster-meta">
+                <div className="disaster-location">
+                  <FaMapMarkerAlt /> {post.city}
+                </div>
+                <div className="disaster-time">
+                  <FaClock /> {formatDate(post.timestamp)}
+                </div>
+              </div>
+            </div>
+          </Popup>
+        </Marker>
+      ))}
+    </MarkerClusterGroup>
+  );
 };
 
 // Modified MapUpdater Component to create more accurate local weather visualization
@@ -274,6 +468,27 @@ const MapComponent = ({ latitude, longitude }) => {
   const [loading, setLoading] = useState(true);
   const [cityName, setCityName] = useState("");
   const [mapKey, setMapKey] = useState(Date.now()); // Add a key to force re-render when needed
+  const [viewMode, setViewMode] = useState("weather");
+  const [selectedDisasterTypes, setSelectedDisasterTypes] = useState([
+    "flood",
+    "fire",
+    "earthquake",
+    "landslide",
+    "drought",
+    "cyclone",
+    "other",
+  ]);
+
+  // All available disaster types
+  const allDisasterTypes = [
+    "flood",
+    "fire",
+    "earthquake",
+    "landslide",
+    "drought",
+    "cyclone",
+    "other",
+  ];
 
   const API_KEY = "ff49434dad6c9d9a449cc5e5d4d5e5c3";
 
@@ -398,6 +613,13 @@ const MapComponent = ({ latitude, longitude }) => {
     setUnit(newUnit);
   };
 
+  // Toggle disaster type in filter
+  const toggleDisasterType = (type) => {
+    setSelectedDisasterTypes((prev) =>
+      prev.includes(type) ? prev.filter((t) => t !== type) : [...prev, type]
+    );
+  };
+
   return (
     <div className="map-component-container">
       <div className="map-controls">
@@ -433,6 +655,12 @@ const MapComponent = ({ latitude, longitude }) => {
             <FaCloud /> Clouds
           </button>
         </div>
+
+        <DisasterFilterDropdown
+          selectedTypes={selectedDisasterTypes}
+          toggleType={toggleDisasterType}
+          allTypes={allDisasterTypes}
+        />
 
         <div className="current-location-info">
           <span className="location-name">{cityName}</span>
@@ -480,6 +708,12 @@ const MapComponent = ({ latitude, longitude }) => {
               weatherData={weatherData}
               param={param}
               cityName={cityName}
+            />
+
+            {/* Disaster data markers with clustering */}
+            <DisasterMarkers
+              disasterData={disasterData}
+              selectedDisasterTypes={selectedDisasterTypes}
             />
 
             {/* Main location marker */}
