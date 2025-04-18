@@ -29,7 +29,7 @@
 }
 
 .profile-header h1:after {
-  content: '';
+  content: "";
   position: absolute;
   bottom: -10px;
   left: 50%;
@@ -308,7 +308,7 @@
 .profile-activity-section h3:before,
 .reports-section h3:before,
 .quick-actions h3:before {
-  content: '';
+  content: "";
   position: absolute;
   bottom: -1px;
   left: 0;
@@ -425,7 +425,7 @@
 }
 
 .activity-item:after {
-  content: '';
+  content: "";
   position: absolute;
   left: 60px;
   top: 4.5rem;

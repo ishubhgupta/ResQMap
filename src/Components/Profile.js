@@ -141,15 +141,23 @@ const Profile = () => {
             {userData.profilePicture ? (
               <img src={userData.profilePicture} alt="Profile" />
             ) : (
-              <img src={randomAvatar} alt="Default profile" className="default-avatar" />
+              <img
+                src={randomAvatar}
+                alt="Default profile"
+                className="default-avatar"
+              />
             )}
           </div>
           <h2>{userData.name}</h2>
           <div className="verification-badge">
             {userData.isVerified ? (
-              <span className="verified"><FaCheckCircle /> Verified Account</span>
+              <span className="verified">
+                <FaCheckCircle /> Verified Account
+              </span>
             ) : (
-              <span className="unverified"><FaExclamationCircle /> Email Verification Pending</span>
+              <span className="unverified">
+                <FaExclamationCircle /> Email Verification Pending
+              </span>
             )}
           </div>
           <p className="member-since">
@@ -189,17 +197,23 @@ const Profile = () => {
                 <div className="stat-card">
                   <div className="stat-number">{stats.total}</div>
                   <div className="stat-label">Total Reports</div>
-                  <div className="stat-icon"><FaFileAlt /></div>
+                  <div className="stat-icon">
+                    <FaFileAlt />
+                  </div>
                 </div>
                 <div className="stat-card active-card">
                   <div className="stat-number">{stats.active}</div>
                   <div className="stat-label">Active Cases</div>
-                  <div className="stat-icon"><FaExclamationCircle /></div>
+                  <div className="stat-icon">
+                    <FaExclamationCircle />
+                  </div>
                 </div>
                 <div className="stat-card resolved-card">
                   <div className="stat-number">{stats.resolved}</div>
                   <div className="stat-label">Resolved Cases</div>
-                  <div className="stat-icon"><FaCheckCircle /></div>
+                  <div className="stat-icon">
+                    <FaCheckCircle />
+                  </div>
                 </div>
               </div>
 
@@ -282,11 +296,21 @@ const Profile = () => {
                     <div className="report-card" key={index}>
                       <div className="report-header">
                         <h4>{report.name}</h4>
-                        <span className={`report-status ${report.status === "resolved" ? "status-resolved" : "status-active"}`}>
+                        <span
+                          className={`report-status ${
+                            report.status === "resolved"
+                              ? "status-resolved"
+                              : "status-active"
+                          }`}
+                        >
                           {report.status === "resolved" ? (
-                            <><FaCheckCircle /> Resolved</>
+                            <>
+                              <FaCheckCircle /> Resolved
+                            </>
                           ) : (
-                            <><FaExclamationCircle /> Active</>
+                            <>
+                              <FaExclamationCircle /> Active
+                            </>
                           )}
                         </span>
                       </div>
@@ -314,19 +338,27 @@ const Profile = () => {
                             </div>
                             <div className="report-info-item">
                               <span className="info-label">Gender</span>
-                              <span className="info-value">{report.gender}</span>
+                              <span className="info-value">
+                                {report.gender}
+                              </span>
                             </div>
                             <div className="report-info-item">
                               <span className="info-label">Place</span>
-                              <span className="info-value">{report.placeOfDisappearance}</span>
+                              <span className="info-value">
+                                {report.placeOfDisappearance}
+                              </span>
                             </div>
                             <div className="report-info-item">
                               <span className="info-label">Disappeared On</span>
-                              <span className="info-value">{formatDate(report.disappearanceDate)}</span>
+                              <span className="info-value">
+                                {formatDate(report.disappearanceDate)}
+                              </span>
                             </div>
                             <div className="report-info-item">
                               <span className="info-label">Reported On</span>
-                              <span className="info-value">{formatDate(report.createdAt)}</span>
+                              <span className="info-value">
+                                {formatDate(report.createdAt)}
+                              </span>
                             </div>
                           </div>
 
@@ -398,7 +430,10 @@ const Profile = () => {
                 <div className="no-activity">
                   <FaHistory className="no-activity-icon" />
                   <h4>No Activity Found</h4>
-                  <p>Your activity history will appear here once you start using the platform.</p>
+                  <p>
+                    Your activity history will appear here once you start using
+                    the platform.
+                  </p>
                 </div>
               )}
             </div>
@@ -410,7 +445,11 @@ const Profile = () => {
 };
 
 // Import the missing icons
-const FaSearch = ({ className }) => <i className={`fa fa-search ${className}`}></i>;
-const FaBullhorn = ({ className }) => <i className={`fa fa-bullhorn ${className}`}></i>;
+const FaSearch = ({ className }) => (
+  <i className={`fa fa-search ${className}`}></i>
+);
+const FaBullhorn = ({ className }) => (
+  <i className={`fa fa-bullhorn ${className}`}></i>
+);
 
 export default Profile;
