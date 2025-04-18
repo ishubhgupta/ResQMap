@@ -74,7 +74,8 @@ _Comprehensive missing person database with search functionality_
 
 ### Disaster News Bulletin
 
-![News Bulletin](public/screenshots/news-bulletin.png)
+![News Bulletin](public/screenshots/news-bulletin-1.png)
+![News Bulletin](public/screenshots/news-bulletin-2.png)
 _Real-time disaster news aggregation and categorization_
 
 ### NGO Donation Platform
@@ -212,7 +213,7 @@ This project is proprietary and not open source. All rights reserved.
 
 For any inquiries, please contact:
 
-- Email: Shubhorai12@mail.com
+- Email: shubhorai12@mail.com
 
 ---
 
