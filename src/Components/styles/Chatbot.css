@@ -82,6 +82,7 @@
 }
 
 .message.bot {
+    display: flex;
     background-color: #ff8c00;
     color: #fff;
     margin-right: 5rem;
@@ -89,9 +90,8 @@
     border-top-left-radius: 0;
 }
 
-.bot-image {
-    width: 20%;
-    height: 20%;
+.bot-image-1 {
+    width: 100%;
     border-radius: 50%;
     object-fit: cover; /* Makes sure the image doesn't stretch */
 }
@@ -133,4 +133,8 @@
 .input-area button:hover {
     background-color: #0056b3;
     transition: background-color 0.2s ease-in-out;
+}
+
+.bot-image-container {
+    max-width: 30px;
 }

@@ -10,6 +10,7 @@ const storage = multer.diskStorage({
 export const upload = multer({
   storage,
   fileFilter: (req, file, cb) => {
+    console.log("File being uploaded:", file);
     const fileTypes = /jpeg|jpg|png/;
     const extname = fileTypes.test(path.extname(file.originalname).toLowerCase());
     const mimeType = fileTypes.test(file.mimetype);

@@ -1,104 +1,85 @@
-import React, { useState, useEffect, useRef } from "react";
-import { GoogleGenerativeAI } from "@google/generative-ai";
+import React, { useState, useEffect } from "react";
+import axios from "axios";
 import "./styles/Chatbot.css";
-import sunImage from './assets/sun.png';
+import sunImage from "./assets/sun.png";
 
 const Chatbot = () => {
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState("");
   const [isChatbotVisible, setIsChatbotVisible] = useState(false);
-  const chatRef = useRef(null);
+  const [userName, setUserName] = useState(null);
 
+  // Fetch user profile data
   useEffect(() => {
-    // Initialize Google Generative AI
-    const apiKey = process.env.REACT_APP_GEMINI_API;
-    console.log("API Key:", apiKey); // Add this line to check if the API key is being loaded
-    const genAI = new GoogleGenerativeAI(apiKey);
+    axios
+      .get("http://localhost:9000/api/user/profile", {
+        withCredentials: true, // Include credentials
+      })
+      .then((response) => setUserName(response.data.name))
+      .catch((error) => console.error("Error fetching profile data:", error));
+  }, []);
 
+  const sendMessageToBackend = async (message) => {
     try {
-      const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
-      chatRef.current = model.startChat({
-        history: [
-          {
-            role: "user",
-            parts: [{ text: "Hello. Act like you are a disaster management guide. Give short answers to relevant questions. Respond with 'Question out of context' for irrelevant questions." }],
-          },
-          {
-            role: "model",
-            parts: [{ text: "Understood. Ask me anything about disaster management." }],
-          },
-        ],
+      // Send the message to the backend
+      const response = await fetch("http://localhost:8000/chat", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ query: message }),
       });
 
-      // Send initial greeting when chatbot is toggled
-      if (isChatbotVisible) {
-        const initialMessage = "Hello, How can I help you with Disaster Management?";
-        setMessages([{ sender: "bot", text: initialMessage }]);
-
-        // Add greeting to chat history
-        chatRef.current.history.push({
-          role: "model",
-          parts: [{ text: initialMessage }],
-        });
+      if (!response.ok) {
+        throw new Error(`Server error: ${response.status}`);
       }
+
+      const data = await response.json();
+
+      // Display only the bot's response
+      const botResponse = { sender: "bot", text: data.reply };
+      setMessages((prevMessages) => [...prevMessages, botResponse]);
     } catch (error) {
-      console.error("Error initializing Google Generative AI:", error);
+      console.error("Error communicating with backend:", error);
+      setMessages((prevMessages) => [
+        ...prevMessages,
+        { sender: "bot", text: "An error occurred. Please try again later." },
+      ]);
     }
-  }, [isChatbotVisible]);
+  };
+
+  const toggleChatbot = () => {
+    setIsChatbotVisible((prevVisibility) => {
+      const newVisibility = !prevVisibility;
+
+      if (newVisibility && userName) {
+        // Send a personalized "Hello" message to the backend when chatbot is toggled on
+        const personalizedMessage = `Hello, my name is ${userName}!`;
+        sendMessageToBackend(personalizedMessage);
+      }
+      else if (newVisibility) {
+        // Send a generic "Hello" message to the backend when chatbot is toggled on
+        sendMessageToBackend("Hello");
+      }
+
+      return newVisibility;
+    });
+  };
 
   const handleSend = async () => {
     if (!input.trim()) return;
 
-    // Add user's message to the chat window
     const userMessage = { sender: "user", text: input };
     setMessages((prevMessages) => [...prevMessages, userMessage]);
 
-    try {
-      const chat = chatRef.current;
-      if (!chat) throw new Error("Chat instance not initialized.");
-
-      const result = await chat.sendMessageStream(input);
-      let botResponse = "";
-
-      for await (const chunk of result.stream) {
-        const chunkText = chunk.text();
-        botResponse += chunkText;
-
-        // Stream partial responses
-        updateMessages(botResponse);
-      }
-
-      // Replace "streaming" message with the final bot message
-      setMessages((prevMessages) => [
-        ...prevMessages.filter((msg) => msg.sender !== "bot-streaming"),
-        { sender: "bot", text: botResponse },
-      ]);
-    } catch (error) {
-      console.error("Error during message processing:", error);
-      setMessages((prevMessages) => [
-        ...prevMessages,
-        { sender: "bot", text: `An error occurred. Please try again later. Error: ${error.message}` },
-      ]);
-    }
-
-    // Clear input field
+    sendMessageToBackend(input);
     setInput("");
-  };
-
-  const updateMessages = (botResponse) => {
-    setMessages((prevMessages) => [
-      ...prevMessages.filter((msg) => msg.sender !== "bot-streaming"),
-      { sender: "bot-streaming", text: botResponse },
-    ]);
   };
 
   return (
     <>
       {/* Fixed Button */}
-      <button
-        className="chatbot-toggle-button"
-        onClick={() => setIsChatbotVisible(!isChatbotVisible)}
-      >
+      <button className="chatbot-toggle-button" onClick={toggleChatbot}>
         🌳
       </button>
 
@@ -111,13 +92,12 @@ const Chatbot = () => {
                 key={index}
                 className={`message ${msg.sender === "user" ? "user" : "bot"}`}
               >
-                {/* If the message is from the bot, show the bot image */}
                 {msg.sender === "bot" && (
                   <div className="bot-image-container">
                     <img
-                      src={sunImage} // Replace with actual image path or URL
+                      src={sunImage}
                       alt="Bot"
-                      className="bot-image"
+                      className="bot-image-1"
                     />
                   </div>
                 )}

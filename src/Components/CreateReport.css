@@ -1,0 +1,181 @@
+.create-report-container {
+  max-width: 800px;
+  margin: 2rem auto;
+  padding: 2.5rem;
+  background-color: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  position: relative;
+}
+
+.home-link {
+  position: absolute;
+  top: 1.5rem;
+  left: 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: #3498db;
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.2s;
+}
+
+.home-link:hover {
+  color: #2980b9;
+  text-decoration: underline;
+}
+
+.home-link svg {
+  width: 16px;
+  height: 16px;
+}
+
+.form-title {
+  text-align: center;
+  color: #1a365d;
+  margin-bottom: 2rem;
+  padding-bottom: 1rem;
+  border-bottom: 2px solid #f0f4f8;
+  font-size: 1.8rem;
+}
+
+.report-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.form-section {
+  background: white;
+  padding: 2rem;
+  border-radius: 10px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+  border-left: 4px solid #3498db;
+  transition: transform 0.2s ease-in-out;
+}
+
+.form-section:hover {
+  transform: translateY(-3px);
+}
+
+.form-section h3 {
+  margin-top: 0;
+  color: #2c5282;
+  font-size: 1.3rem;
+  margin-bottom: 1.2rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.form-group {
+  margin-bottom: 1rem;
+}
+
+.form-row {
+  display: flex;
+  gap: 1rem;
+}
+
+.form-row .form-group {
+  flex: 1;
+}
+
+label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+  color: #444;
+}
+
+input[type="text"],
+input[type="number"],
+input[type="date"],
+select,
+textarea {
+  width: 100%;
+  padding: 0.85rem;
+  border: 1px solid #cbd5e0;
+  border-radius: 8px;
+  font-size: 1rem;
+  transition: all 0.3s;
+  background-color: #f8fafc;
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+  outline: none;
+  border-color: #4299e1;
+  box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.2);
+  background-color: #fff;
+}
+
+.file-input {
+  padding: 0.5rem 0;
+}
+
+.file-input::file-selector-button {
+  padding: 0.5rem 1rem;
+  background-color: #f0f0f0;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-right: 1rem;
+  transition: background-color 0.2s;
+}
+
+.file-input::file-selector-button:hover {
+  background-color: #e0e0e0;
+}
+
+.form-actions {
+  display: flex;
+  justify-content: center;
+  margin-top: 1rem;
+}
+
+.submit-button {
+  background-color: #3182ce;
+  color: white;
+  border: none;
+  padding: 0.85rem 2.5rem;
+  font-size: 1.1rem;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s;
+  box-shadow: 0 4px 6px rgba(49, 130, 206, 0.2);
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+
+.submit-button:hover {
+  background-color: #2b6cb0;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 8px rgba(49, 130, 206, 0.3);
+}
+
+.submit-button:active {
+  transform: translateY(0);
+}
+
+@media (max-width: 600px) {
+  .form-row {
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .create-report-container {
+    padding: 1rem;
+  }
+}
+
+/* Add a subtle pattern background to the page */
+body {
+  background-color: #f9fafc;
+  background-image: linear-gradient(
+      rgba(255, 255, 255, 0.7),
+      rgba(255, 255, 255, 0.7)
+    ),
+    url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M11 18c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm-43-7c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm63 31c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM34 90c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm56-76c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM12 86c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm28-65c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm23-11c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-6 60c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm29 22c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zM32 63c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm57-13c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-9-21c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM60 91c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM35 41c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM12 60c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2z' fill='%233182ce' fill-opacity='0.05' fill-rule='evenodd'/%3E%3C/svg%3E");
+}
