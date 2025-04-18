@@ -10,6 +10,10 @@ import {
   FaCalendarAlt,
   FaEdit,
   FaArrowLeft,
+  FaUserCircle,
+  FaCheckCircle,
+  FaExclamationCircle,
+  FaHistory,
 } from "react-icons/fa";
 import "./styles/Profile.css";
 
@@ -19,6 +23,15 @@ const Profile = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [activeTab, setActiveTab] = useState("overview");
+
+  // Default avatar options - use one of these instead of the FaUser icon
+  const defaultAvatars = [
+    "/images/avatars/default-avatar-1.png", // You'll need to add these images
+    "/images/avatars/default-avatar-2.png", // to your public/images/avatars folder
+  ];
+
+  // Select a random avatar from the options
+  const randomAvatar = "/images/default-user.png"; // Fallback to a single default image
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -128,12 +141,17 @@ const Profile = () => {
             {userData.profilePicture ? (
               <img src={userData.profilePicture} alt="Profile" />
             ) : (
-              <div className="avatar-placeholder">
-                <FaUser />
-              </div>
+              <img src={randomAvatar} alt="Default profile" className="default-avatar" />
             )}
           </div>
           <h2>{userData.name}</h2>
+          <div className="verification-badge">
+            {userData.isVerified ? (
+              <span className="verified"><FaCheckCircle /> Verified Account</span>
+            ) : (
+              <span className="unverified"><FaExclamationCircle /> Email Verification Pending</span>
+            )}
+          </div>
           <p className="member-since">
             Member since {formatDate(userData.createdAt || Date.now())}
           </p>
@@ -143,13 +161,19 @@ const Profile = () => {
               className={activeTab === "overview" ? "active" : ""}
               onClick={() => setActiveTab("overview")}
             >
-              Overview
+              <FaUserCircle /> Overview
             </button>
             <button
               className={activeTab === "reports" ? "active" : ""}
               onClick={() => setActiveTab("reports")}
             >
-              My Reports
+              <FaFileAlt /> My Reports
+            </button>
+            <button
+              className={activeTab === "activity" ? "active" : ""}
+              onClick={() => setActiveTab("activity")}
+            >
+              <FaHistory /> Activity Log
             </button>
           </div>
 
@@ -159,20 +183,23 @@ const Profile = () => {
         </div>
 
         <div className="profile-main">
-          {activeTab === "overview" ? (
+          {activeTab === "overview" && (
             <>
               <div className="profile-stats">
                 <div className="stat-card">
                   <div className="stat-number">{stats.total}</div>
                   <div className="stat-label">Total Reports</div>
+                  <div className="stat-icon"><FaFileAlt /></div>
                 </div>
-                <div className="stat-card">
+                <div className="stat-card active-card">
                   <div className="stat-number">{stats.active}</div>
                   <div className="stat-label">Active Cases</div>
+                  <div className="stat-icon"><FaExclamationCircle /></div>
                 </div>
-                <div className="stat-card">
+                <div className="stat-card resolved-card">
                   <div className="stat-number">{stats.resolved}</div>
                   <div className="stat-label">Resolved Cases</div>
+                  <div className="stat-icon"><FaCheckCircle /></div>
                 </div>
               </div>
 
@@ -225,37 +252,27 @@ const Profile = () => {
                 </div>
               </div>
 
-              <div className="profile-activity-section">
-                <h3>Recent Activity</h3>
-                {reports.length > 0 ? (
-                  <div className="activity-timeline">
-                    {reports.slice(0, 3).map((report, index) => (
-                      <div className="activity-item" key={index}>
-                        <div className="activity-icon">
-                          <FaFileAlt />
-                        </div>
-                        <div className="activity-content">
-                          <div className="activity-title">
-                            Reported a missing person: {report.name}
-                          </div>
-                          <div className="activity-meta">
-                            <span>
-                              <FaMapMarkerAlt /> {report.placeOfDisappearance}
-                            </span>
-                            <span>
-                              <FaCalendarAlt /> {formatDate(report.createdAt)}
-                            </span>
-                          </div>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                ) : (
-                  <p className="no-activity">No recent activity to display</p>
-                )}
+              <div className="quick-actions">
+                <h3>Quick Actions</h3>
+                <div className="action-buttons">
+                  <Link to="/create-report" className="action-button">
+                    <FaFileAlt />
+                    <span>Create New Report</span>
+                  </Link>
+                  <Link to="/view-report" className="action-button">
+                    <FaSearch />
+                    <span>Search Reports</span>
+                  </Link>
+                  <Link to="/bulletins" className="action-button">
+                    <FaBullhorn />
+                    <span>News Bulletins</span>
+                  </Link>
+                </div>
               </div>
             </>
-          ) : (
+          )}
+
+          {activeTab === "reports" && (
             <div className="reports-section">
               <h3>Missing Person Reports Filed by You</h3>
 
@@ -265,45 +282,56 @@ const Profile = () => {
                     <div className="report-card" key={index}>
                       <div className="report-header">
                         <h4>{report.name}</h4>
-                        <span className="report-status">
-                          {report.status === "resolved" ? "Resolved" : "Active"}
+                        <span className={`report-status ${report.status === "resolved" ? "status-resolved" : "status-active"}`}>
+                          {report.status === "resolved" ? (
+                            <><FaCheckCircle /> Resolved</>
+                          ) : (
+                            <><FaExclamationCircle /> Active</>
+                          )}
                         </span>
                       </div>
 
                       <div className="report-details">
-                        {report.photoURL && (
+                        {report.photoURL ? (
                           <div className="report-image">
                             <img
                               src={`http://localhost:9000/${report.photoURL}`}
                               alt={report.name}
                             />
                           </div>
+                        ) : (
+                          <div className="report-image no-image">
+                            <FaUserCircle />
+                            <span>No Image</span>
+                          </div>
                         )}
 
                         <div className="report-info">
-                          <p>
-                            <strong>Age:</strong> {report.age}
-                          </p>
-                          <p>
-                            <strong>Gender:</strong> {report.gender}
-                          </p>
-                          <p>
-                            <strong>Place of Disappearance:</strong>{" "}
-                            {report.placeOfDisappearance}
-                          </p>
-                          <p>
-                            <strong>Date of Disappearance:</strong>{" "}
-                            {formatDate(report.disappearanceDate)}
-                          </p>
-                          <p>
-                            <strong>Report Filed:</strong>{" "}
-                            {formatDate(report.createdAt)}
-                          </p>
+                          <div className="report-info-grid">
+                            <div className="report-info-item">
+                              <span className="info-label">Age</span>
+                              <span className="info-value">{report.age}</span>
+                            </div>
+                            <div className="report-info-item">
+                              <span className="info-label">Gender</span>
+                              <span className="info-value">{report.gender}</span>
+                            </div>
+                            <div className="report-info-item">
+                              <span className="info-label">Place</span>
+                              <span className="info-value">{report.placeOfDisappearance}</span>
+                            </div>
+                            <div className="report-info-item">
+                              <span className="info-label">Disappeared On</span>
+                              <span className="info-value">{formatDate(report.disappearanceDate)}</span>
+                            </div>
+                            <div className="report-info-item">
+                              <span className="info-label">Reported On</span>
+                              <span className="info-value">{formatDate(report.createdAt)}</span>
+                            </div>
+                          </div>
 
                           <div className="report-description">
-                            <p>
-                              <strong>Description:</strong>
-                            </p>
+                            <h5>Description</h5>
                             <p>
                               {report.description || "No description provided"}
                             </p>
@@ -314,7 +342,7 @@ const Profile = () => {
                               to={`/update-report/${report._id}`}
                               className="update-report-btn"
                             >
-                              Update Report
+                              <FaEdit /> Update Report
                             </Link>
                           </div>
                         </div>
@@ -324,10 +352,53 @@ const Profile = () => {
                 </div>
               ) : (
                 <div className="no-reports">
+                  <FaFileAlt className="no-reports-icon" />
+                  <h4>No Reports Found</h4>
                   <p>You haven't filed any missing person reports yet.</p>
                   <Link to="/create-report" className="create-report-btn">
-                    Create New Report
+                    <FaFileAlt /> Create New Report
                   </Link>
+                </div>
+              )}
+            </div>
+          )}
+
+          {activeTab === "activity" && (
+            <div className="profile-activity-section">
+              <h3>Activity History</h3>
+              {reports.length > 0 ? (
+                <div className="activity-timeline">
+                  {reports.map((report, index) => (
+                    <div className="activity-item" key={index}>
+                      <div className="activity-icon">
+                        <FaFileAlt />
+                      </div>
+                      <div className="activity-content">
+                        <div className="activity-title">
+                          Reported a missing person: {report.name}
+                        </div>
+                        <div className="activity-description">
+                          {report.description
+                            ? report.description.substring(0, 120) + "..."
+                            : "No description provided."}
+                        </div>
+                        <div className="activity-meta">
+                          <span>
+                            <FaMapMarkerAlt /> {report.placeOfDisappearance}
+                          </span>
+                          <span>
+                            <FaCalendarAlt /> {formatDate(report.createdAt)}
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <div className="no-activity">
+                  <FaHistory className="no-activity-icon" />
+                  <h4>No Activity Found</h4>
+                  <p>Your activity history will appear here once you start using the platform.</p>
                 </div>
               )}
             </div>
@@ -337,5 +408,9 @@ const Profile = () => {
     </div>
   );
 };
+
+// Import the missing icons
+const FaSearch = ({ className }) => <i className={`fa fa-search ${className}`}></i>;
+const FaBullhorn = ({ className }) => <i className={`fa fa-bullhorn ${className}`}></i>;
 
 export default Profile;
