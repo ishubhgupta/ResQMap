@@ -79,7 +79,8 @@ _Real-time disaster news aggregation and categorization_
 
 ### NGO Donation Platform
 
-![Donation Platform](public/screenshots/donation-platform.png)
+![Donation Platform](public/screenshots/donation-platform-1.png)
+![Donation Platform](public/screenshots/donation-platform-2.png)
 _Connect and contribute to verified disaster relief organizations_
 
 ### User Profile
