@@ -1,6 +1,6 @@
-# Sahej - Disaster Support Network
+# ResQMap - Disaster Support Network
 
-<img src="public/images/logo.png" alt="Sahej Logo" width="200">
+<img src="public/images/logo.png" alt="ResQMap Logo" width="200">
 
 <h3>A comprehensive platform integrating real-time weather monitoring, disaster reporting, missing person tracking, and relief coordination for emergency response.</h3><br>
 
@@ -98,8 +98,8 @@ _Personalized user dashboard with activity tracking_
 1. Clone the repository
 
 ```bash
-git clone https://github.com/yourusername/sahej-DSN.git
-cd sahej-DSN
+git clone https://github.com/yourusername/ResQMap.git
+cd ResQMap
 ```
 
 2. Install dependencies for frontend
@@ -199,7 +199,7 @@ npm start
 
 ## 🖊️ Contributing
 
-Sahej is currently not open for public contributions as it's undergoing active development. However, we welcome feedback and suggestions to improve the platform.
+ResQMap is currently not open for public contributions as it's undergoing active development. However, we welcome feedback and suggestions to improve the platform.
 
 ## 📝 License
 
@@ -213,6 +213,6 @@ For any inquiries, please contact:
 
 ---
 
-© 2025 Sahej Disaster Support Network. All rights reserved.
+© 2025 ResQMap Disaster Support Network. All rights reserved.
 
 Made with ❤️ for disaster Resilience
